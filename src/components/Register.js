@@ -37,7 +37,7 @@ const Register = () => {
 
   const handleSignUp = async () => {
     try {
-      const response = await fetch("/user/register", {
+      const response = await fetch("https://proconnect-backend.onrender.com/user/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
