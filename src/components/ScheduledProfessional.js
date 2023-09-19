@@ -208,7 +208,7 @@ const ScheduledProfessional = () => {
         if (response.ok) {
           const data = await response.json();
           setInterviews(data);
-          console.log(data)
+          console.log(data[0])
         } else {
           console.error("Error fetching scheduled interviews:", response.statusText);
           console.log("error");
