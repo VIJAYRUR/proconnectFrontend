@@ -7,7 +7,7 @@ const ProfessionalHistory = () => {
     // Fetch feedback history for the professional here
     const fetchFeedbackHistory = async () => {
       try {
-        const response = await fetch("/user/professional_history", {
+        const response = await fetch("https://proconnect-backend.onrender.com/user/professional_history", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
