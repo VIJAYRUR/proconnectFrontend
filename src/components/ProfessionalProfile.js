@@ -9,7 +9,7 @@ const ProfessionalProfile = () => {
   useEffect(() => {
     const fetchProfileData = async () => {
       try {
-        const response = await fetch("/user/view_professional_profile", {
+        const response = await fetch("https://proconnect-backend.onrender.com/user/view_professional_profile", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
