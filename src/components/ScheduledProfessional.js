@@ -276,7 +276,7 @@ const ScheduledProfessional = () => {
         <p>No scheduled interviews found.</p>
       ) : (
         <div className="row">
-          {interviews.map((interview) => (
+          {interviews[0].map((interview) => (
             <div key={interview._id} className="col-md-4 mb-4">
               <div className="card">
                 <div className="card-body">
