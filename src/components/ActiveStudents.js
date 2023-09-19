@@ -39,7 +39,7 @@ const ActiveStudents = () => {
 
   const handleDeleteRequest = async () => {
     try {
-      const response = await fetch("/user/delete_active_request", {
+      const response = await fetch("https://proconnect-backend.onrender.com/user/delete_active_request", {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
