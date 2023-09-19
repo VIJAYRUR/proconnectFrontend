@@ -7,7 +7,7 @@ const StudentReview = () => {
   useEffect(() => {
     const fetchFeedbackHistory = async () => {
       try {
-        const response = await fetch("/user/student_history", {
+        const response = await fetch("https://proconnect-backend.onrender.com/user/student_history", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
