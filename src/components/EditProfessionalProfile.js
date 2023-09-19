@@ -105,7 +105,7 @@ const EditProfessionalProfile = () => {
 
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch("/user/make_professional_profile", {
+      const response = await fetch("https://proconnect-backend.onrender.com/user/make_professional_profile", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
