@@ -9,7 +9,7 @@ const ActiveStudents = () => {
   useEffect(() => {
     const fetchActiveRequest = async () => {
       try {
-        const response = await fetch("/user/active_requests", {
+        const response = await fetch("https://proconnect-backend.onrender.com/user/active_requests", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
