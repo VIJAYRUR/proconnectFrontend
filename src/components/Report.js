@@ -36,7 +36,7 @@ const Report = () => {
     };
 
     try {
-      const response = await fetch("/api/sendReport", {
+      const response = await fetch("https://proconnect-backend.onrender.com/api/sendReport", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
