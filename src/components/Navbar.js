@@ -18,7 +18,7 @@ const Navbar = () => {
     }
   };
   return (
-    <div>
+    <div style={{marginTop:"8%"} }>
       <nav
         className="navbar navbar-expand-md h-5 py-1 fixed-top"
         style={{
@@ -98,8 +98,28 @@ const Navbar = () => {
               >
                 Working
               </a>
+
+                
             </li>
-          </ul>
+            <li className="nav-item">
+             
+                {localStorage.getItem("role")==="student" && <a href="/ScheduledStudent" className="nav-link pl-2 pr-4"
+                style={{
+                  color: "#4455a4",
+                  fontWeight: "bold",
+                  fontSize: "22px",
+                }}> Dashboard </a> }
+              {localStorage.getItem("role")==="professional" && <a href="/ScheduledProfessional" className="nav-link pl-2 pr-4"
+                style={{
+                  color: "#4455a4",
+                  fontWeight: "bold",
+                  fontSize: "22px",
+                }}> Dashboard </a> }
+          
+
+                
+            </li>
+              </ul>
           {!localStorage.getItem("token") && (
             <form className=" my-2 my-lg-0 pr-3">
               <a
@@ -129,9 +149,8 @@ const Navbar = () => {
                 More options here
               </button>
               <div class="dropdown-menu">
-                <button class="dropdown-item" href="#" onClick={handleProfile}>
-                  Profile
-                </button>
+              <div >{localStorage.getItem("role")==="student" && <a href="/StudentProfile" class="dropdown-item">Profile </a> }
+              {localStorage.getItem("role")==="professional" && <a href="/ProfessionalProfile" class="dropdown-item"> Profile</a> }</div>
                 <Link to="/report" class="dropdown-item" href="#">
                   Report
                 </Link>

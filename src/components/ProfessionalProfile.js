@@ -41,8 +41,11 @@ const ProfessionalProfile = () => {
   };
 
   return (
-    <div className="container mt-5">
+    <div  style={{marginTop:"8%"}}>
       {error.length === 0 && profileData && (
+        
+       
+          
         <div className="row">
           <div className="col-md-6">
             <div className="card">
@@ -75,6 +78,12 @@ const ProfessionalProfile = () => {
                   <li className="list-group-item">
                     <strong>LinkedIn:</strong> {profileData.linkedin}
                   </li>
+                  <Link
+                className="btn btn-primary mt-4"
+                to="/editProfessionalProfile"
+              >
+                Edit Profile
+              </Link>
                 </ul>
               </div>
             </div>
@@ -87,15 +96,11 @@ const ProfessionalProfile = () => {
                 style={imageStyle}
                 className="img-fluid rounded-circle mt-3"
               />
-              <Link
-                className="btn btn-primary mt-4"
-                to="/editProfessionalProfile"
-              >
-                Edit Profile
-              </Link>
+              
             </div>
           </div>
         </div>
+       
       )}
       {!profileData && (
         <div className="alert alert-danger mt-3">
@@ -111,6 +116,7 @@ const ProfessionalProfile = () => {
         </div>
       )}
     </div>
+    
   );
 };
 

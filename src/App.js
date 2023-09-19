@@ -30,7 +30,7 @@ function App() {
     <Router>
       <div>
         <div><Navbar /></div>
-        {localStorage.getItem("role") === "student" && (window.location.pathname==="/ScheduledStudent" ||window.location.pathname==="/studentReview"||window.location.pathname==="/ActiveStudents"||window.location.pathname==="/makeRequest" ) && (
+        {localStorage.getItem("role") === "student" && (window.location.pathname==="/ScheduledStudent" || window.location.pathname==="/scheduledStudent"||window.location.pathname==="/studentReview"||window.location.pathname==="/ActiveStudents"||window.location.pathname==="/makeRequest" ) && (
           <div style={{marginTop:"8%"}}>
 
 
@@ -115,14 +115,14 @@ function App() {
             </div>
           </div>
         )}
-        {localStorage.getItem("role") === "professional" && (
+        {localStorage.getItem("role") === "professional" && (window.location.pathname==="/ScheduledProfessional" ||window.location.pathname==="/MatchRequest"||window.location.pathname==="/ProfessionalHistory") && (
           <div style={{marginTop:"8%"}}>
             <div
               className="btn-group-lg"
               role="group"
               aria-label="Basic example"
               style={{
-                backgroundColor: "rgb(213 213 207)", // Background color for the entire menu
+                backgroundColor: "transparent", // Background color for the entire menu
                 overflow: "hidden",
                 display: "flex",
                 borderRadius: "10px", // Rounded corners for the menu
