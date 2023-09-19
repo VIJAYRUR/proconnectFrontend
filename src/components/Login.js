@@ -51,7 +51,6 @@ const Login = () => {
         window.location.reload();
       } else {
         navigate("/scheduledProfessional");
-        window.location.reload();
       }
     } else {
       const data = await response.json();

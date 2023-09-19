@@ -18,7 +18,7 @@ const Navbar = () => {
     }
   };
   return (
-    <div>
+    <div style={{marginTop:"8%"} }>
       <nav
         className="navbar navbar-expand-md h-5 py-1 fixed-top"
         style={{
@@ -26,13 +26,13 @@ const Navbar = () => {
           borderBottom: "2px solid grey", // Add black border at the bottom
         }}
       >
-        <Link to="/" className="navbar-brand">
+        <a href="/" className="navbar-brand">
           <img
             src={iomplogo}
             alt=""
             style={{ height: "8vh", width: "5vw", paddingRight: "10px" }}
           />
-        </Link>
+        </a>
         <button
           className="navbar-toggler"
           type="button"
@@ -48,8 +48,8 @@ const Navbar = () => {
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           <ul className="navbar-nav mr-auto">
             <li className="nav-item">
-              <Link
-                to="/"
+              <a
+                href="/"
                 className="nav-link pl-4 pr-4"
                 style={{
                   color: "#4455a4",
@@ -58,11 +58,11 @@ const Navbar = () => {
                 }}
               >
                 Home
-              </Link>
+              </a>
             </li>
             <li className="nav-item">
-              <Link
-                to="/about"
+              <a
+                href="/about"
                 className="nav-link pl-4 pr-4"
                 style={{
                   color: "#4455a4",
@@ -71,11 +71,11 @@ const Navbar = () => {
                 }}
               >
                 About
-              </Link>
+              </a>
             </li>
             <li className="nav-item">
-              <Link
-                to="/features"
+              <a
+                href="/features"
                 className="nav-link pl-4 pr-4"
                 style={{
                   color: "#4455a4",
@@ -84,11 +84,11 @@ const Navbar = () => {
                 }}
               >
                 Features
-              </Link>
+              </a>
             </li>
             <li className="nav-item">
-              <Link
-                to="/working"
+              <a
+                href="/working"
                 className="nav-link pl-4 pr-4"
                 style={{
                   color: "#4455a4",
@@ -97,12 +97,32 @@ const Navbar = () => {
                 }}
               >
                 Working
-              </Link>
+              </a>
+
+                
             </li>
-          </ul>
+            <li className="nav-item">
+             
+                {localStorage.getItem("role")==="student" && <a href="/ScheduledStudent" className="nav-link pl-2 pr-4"
+                style={{
+                  color: "#4455a4",
+                  fontWeight: "bold",
+                  fontSize: "22px",
+                }}> Dashboard </a> }
+              {localStorage.getItem("role")==="professional" && <a href="/ScheduledProfessional" className="nav-link pl-2 pr-4"
+                style={{
+                  color: "#4455a4",
+                  fontWeight: "bold",
+                  fontSize: "22px",
+                }}> Dashboard </a> }
+          
+
+                
+            </li>
+              </ul>
           {!localStorage.getItem("token") && (
             <form className=" my-2 my-lg-0 pr-3">
-              <Link
+              <a
                 className="btn my-2 my-sm-0"
                 style={{
                   backgroundColor: "#4455a4",
@@ -111,10 +131,10 @@ const Navbar = () => {
                   fontSize: "22px",
                 }}
                 type="submit"
-                to="/Login"
+                href="/Login"
               >
                 Login
-              </Link>
+              </a>
             </form>
           )}
           {localStorage.getItem("token") && (
@@ -129,9 +149,8 @@ const Navbar = () => {
                 More options here
               </button>
               <div class="dropdown-menu">
-                <button class="dropdown-item" href="#" onClick={handleProfile}>
-                  Profile
-                </button>
+              <div >{localStorage.getItem("role")==="student" && <a href="/StudentProfile" class="dropdown-item">Profile </a> }
+              {localStorage.getItem("role")==="professional" && <a href="/ProfessionalProfile" class="dropdown-item"> Profile</a> }</div>
                 <Link to="/report" class="dropdown-item" href="#">
                   Report
                 </Link>
