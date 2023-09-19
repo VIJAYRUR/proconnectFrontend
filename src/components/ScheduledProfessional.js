@@ -211,6 +211,7 @@ const ScheduledProfessional = () => {
           console.log(data)
         } else {
           console.error("Error fetching scheduled interviews:", response.statusText);
+          console.log("error");
         }
       } catch (error) {
         console.error("Network error:", error);
