@@ -67,7 +67,7 @@ const MatchRequests = () => {
     };
 
     fetchActiveRequests();
-  }, []);
+  });
 
   const handleConnectClick = (request) => {
     setSelectedRequest(request);
