@@ -38,7 +38,7 @@ const MakeRequest = () => {
     };
 
     try {
-      const response = await fetch("/user/make_request", {
+      const response = await fetch("https://proconnect-backend.onrender.com/user/make_request", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
