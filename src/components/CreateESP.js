@@ -20,7 +20,7 @@ const CreateESP = () => {
   useEffect(() => {
     const fetchProfileData = async () => {
       try {
-        const response = await fetch("/user/view_student_profile", {
+        const response = await fetch("https://proconnect-backend.onrender.com/user/view_student_profile", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -91,7 +91,7 @@ const CreateESP = () => {
     const skills_array = skills.split(",");
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch("/user/make_student_profile", {
+      const response = await fetch("https://proconnect-backend.onrender.com/user/make_student_profile", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
