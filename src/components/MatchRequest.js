@@ -48,7 +48,7 @@ const MatchRequests = () => {
   useEffect(() => {
     const fetchActiveRequests = async () => {
       try {
-        const response = await fetch("/user/view_all_request", {
+        const response = await fetch("https://proconnect-backend.onrender.com/user/view_all_request", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -75,7 +75,7 @@ const MatchRequests = () => {
 
   const handleScheduleInterview = async () => {
     try {
-      const response = await fetch("/user/match_to_request", {
+      const response = await fetch("https://proconnect-backend.onrender.com/user/match_to_request", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
