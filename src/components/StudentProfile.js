@@ -11,7 +11,7 @@ const StudentProfile = () => {
   useEffect(() => {
     const fetchProfileData = async () => {
       try {
-        const response = await fetch("/user/view_student_profile", {
+        const response = await fetch("https://proconnect-backend.onrender.com/user/view_student_profile", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
