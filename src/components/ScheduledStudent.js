@@ -7,7 +7,7 @@ const ScheduledStudent = () => {
   useEffect(() => {
     const fetchScheduledRequest = async () => {
       try {
-        const response = await fetch("/user/view_student_schedule", {
+        const response = await fetch("https://proconnect-backend.onrender.com/user/view_student_schedule", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
