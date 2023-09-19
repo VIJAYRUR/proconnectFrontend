@@ -28,7 +28,7 @@ const Login = () => {
       role: userType,
     };
 
-    const response = await fetch(`/user/login`, {
+    const response = await fetch(`https://proconnect-backend.onrender.com/user/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
