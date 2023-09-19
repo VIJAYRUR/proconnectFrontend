@@ -176,6 +176,11 @@
 //       )}
 //     </div>
 
+//   );
+// };
+
+// export default ScheduledProfessional;
+
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -203,6 +208,7 @@ const ScheduledProfessional = () => {
         if (response.ok) {
           const data = await response.json();
           setInterviews(data);
+          console.log(data)
         } else {
           console.error("Error fetching scheduled interviews:", response.statusText);
         }
@@ -356,8 +362,3 @@ const ScheduledProfessional = () => {
 };
 
 export default ScheduledProfessional;
-
-//   );
-// };
-
-// export default ScheduledProfessional;
