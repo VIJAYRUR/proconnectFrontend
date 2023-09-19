@@ -29,27 +29,24 @@ function App() {
   return (
     <Router>
       <div>
-        <Navbar />
-        {localStorage.getItem("role") === "student" && (
-          <div>
-            <br></br>
-            <br></br>
-            <br></br>
-            <br></br>
+        <div><Navbar /></div>
+        {localStorage.getItem("role") === "student" && (window.location.pathname==="/ScheduledStudent" ||window.location.pathname==="/studentReview"||window.location.pathname==="/ActiveStudents"||window.location.pathname==="/makeRequest" ) && (
+          <div style={{marginTop:"8%"}}>
+
 
             <div
               className="btn-group-lg"
               role="group"
               aria-label="Basic example"
               style={{
-                backgroundColor: "rgb(213 213 207)", // Background color for the entire menu
+                backgroundColor: "transparent", // Background color for the entire menu
                 overflow: "hidden",
                 display: "flex",
                 borderRadius: "10px", // Rounded corners for the menu
               }}
             >
               <Link
-                to="/scheduledStudent"
+                to="/ScheduledStudent"
                 onClick={() => handleButtonClick("scheduled")}
                 className={`btn btn-primary border-0 rounded-pill ${
                   activeButton === "scheduled" ? "active" : ""
@@ -119,12 +116,7 @@ function App() {
           </div>
         )}
         {localStorage.getItem("role") === "professional" && (
-          <div>
-            <br></br>
-            <br></br>
-            <br></br>
-            <br></br>
-
+          <div style={{marginTop:"8%"}}>
             <div
               className="btn-group-lg"
               role="group"
