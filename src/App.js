@@ -115,7 +115,7 @@ function App() {
             </div>
           </div>
         )}
-        {localStorage.getItem("role") === "professional" && (window.location.pathname==="/ScheduledProfessional" ||window.location.pathname==="/MatchRequest"||window.location.pathname==="/ProfessionalHistory") && (
+        {localStorage.getItem("role") === "professional" && (window.location.pathname==="/ScheduledProfessional"||window.location.pathname==="/scheduledProfessional" ||window.location.pathname==="/MatchRequest"||window.location.pathname==="/matchRequest"||window.location.pathname==="/ProfessionalHistory") && (
           <div style={{marginTop:"8%"}}>
             <div
               className="btn-group-lg"
