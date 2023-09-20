@@ -1,29 +1,541 @@
+// // // import React, { useState } from "react";
+// // // import { useNavigate } from "react-router-dom";
+
+// // // const MakeRequest = () => {
+// // //   const navigate = useNavigate();
+// // //   const [skills, setSkills] = useState([]);
+// // //   const [depthOfKnowledge, setDepthOfKnowledge] = useState("");
+// // //   const [companyTarget, setCompanyTarget] = useState("");
+// // //   const [originTarget, setOriginTarget] = useState("");
+// // //   const [error, setError] = useState("");
+// // //   const [successMessage, setSuccessMessage] = useState("");
+
+// // //   const handleSkillsChange = (event) => {
+// // //     setSkills(event.target.value.split(",").map((skill) => skill.trim()));
+// // //   };
+
+// // //   const handleDepthOfKnowledgeChange = (event) => {
+// // //     setDepthOfKnowledge(event.target.value);
+// // //   };
+
+// // //   const handleCompanyTargetChange = (event) => {
+// // //     setCompanyTarget(event.target.value);
+// // //   };
+
+// // //   const handleOriginTargetChange = (event) => {
+// // //     setOriginTarget(event.target.value);
+// // //   };
+
+// // //   const handleSubmit = async (event) => {
+// // //     event.preventDefault();
+
+// // //     // Prepare request data
+// // //     const requestData = {
+// // //       skills,
+// // //       depth_of_knowledge: depthOfKnowledge,
+// // //       company_target: companyTarget,
+// // //       origin_target: originTarget,
+// // //     };
+
+// // //     try {
+// // //       const response = await fetch("https://proconnect-backend.onrender.com/user/make_request", {
+// // //         method: "POST",
+// // //         headers: {
+// // //           "Content-Type": "application/json",
+// // //           authorization: "Bearer " + localStorage.getItem("token"),
+// // //         },
+// // //         body: JSON.stringify(requestData),
+// // //       });
+
+// // //       if (!response.ok) {
+// // //         const errorMessage = await response.json();
+// // //         setError(errorMessage.message);
+// // //       } else {
+// // //         setSuccessMessage("Interview request made successfully.");
+// // //         // Redirect to a success page or update UI as needed
+// // //         navigate("/ActiveStudents"); // Replace with your success page route
+// // //       }
+// // //     } catch (error) {
+// // //       setError("Network error. Please try again later.");
+// // //     }
+// // //   };
+
+// // //   return (
+// // //     <div className="container mt-5">
+// // //       <div className="row justify-content-center">
+// // //         <div className="col-sm-8">
+// // //           <div className="card">
+// // //             <div className="card-header">
+// // //               <b>Interview Request</b>
+// // //             </div>
+// // //             <div className="card-body">
+// // //               {successMessage && (
+// // //                 <div className="alert alert-success">{successMessage}</div>
+// // //               )}
+// // //               {error && <div className="alert alert-danger">{error}</div>}
+// // //               <form onSubmit={handleSubmit}>
+// // //                 <div className="form-group">
+// // //                   <label>Skills (comma-separated):</label>
+// // //                   <input
+// // //                     type="text"
+// // //                     className="form-control"
+// // //                     value={skills.join(", ")}
+// // //                     onChange={handleSkillsChange}
+// // //                   />
+// // //                 </div>
+// // //                 <div className="form-group">
+// // //                   <label>Depth of Knowledge:</label>
+// // //                   <input
+// // //                     type="text"
+// // //                     className="form-control"
+// // //                     value={depthOfKnowledge}
+// // //                     onChange={handleDepthOfKnowledgeChange}
+// // //                   />
+// // //                 </div>
+// // //                 <div className="form-group">
+// // //                   <label>Company Target:</label>
+// // //                   <input
+// // //                     type="text"
+// // //                     className="form-control"
+// // //                     value={companyTarget}
+// // //                     onChange={handleCompanyTargetChange}
+// // //                   />
+// // //                 </div>
+// // //                 <div className="form-group">
+// // //                   <label>Origin Target:</label>
+// // //                   <input
+// // //                     type="text"
+// // //                     className="form-control"
+// // //                     value={originTarget}
+// // //                     onChange={handleOriginTargetChange}
+// // //                   />
+// // //                 </div>
+// // //                 <button type="submit" className="btn btn-primary">
+// // //                   Submit Request
+// // //                 </button>
+// // //               </form>
+// // //             </div>
+// // //           </div>
+// // //         </div>
+// // //       </div>
+// // //     </div>
+// // //   );
+// // // };
+
+// // // export default MakeRequest;
+
+
+
+// // import React, { useState } from "react";
+// // import { useNavigate } from "react-router-dom";
+
+// // const MakeRequest = () => {
+// //   const navigate = useNavigate();
+// //   const [searchedSkill, setSearchedSkill] = useState("");
+// //   const [searchResults, setSearchResults] = useState([]);
+// //   const [selectedSkills, setSelectedSkills] = useState([]);
+// //   const [depthOfKnowledge, setDepthOfKnowledge] = useState("");
+// //   const [companyTarget, setCompanyTarget] = useState("");
+// //   const [originTarget, setOriginTarget] = useState("");
+// //   const [error, setError] = useState("");
+// //   const [successMessage, setSuccessMessage] = useState("");
+
+// //   const handleSearchSkill = (event) => {
+// //     const skillToSearch = event.target.value;
+// //     setSearchedSkill(skillToSearch);
+
+// //     // Filter the sample skills based on the search query
+// //     const filteredSkills = ["React", "Express", "Node", "Python", "Java"].filter(
+// //       (skill) =>
+// //         skill.toLowerCase().includes(skillToSearch.toLowerCase())
+// //     );
+// //     setSearchResults(filteredSkills);
+// //   };
+
+// //   const handleAddSkill = (skill) => {
+// //     if (!selectedSkills.includes(skill)) {
+// //       setSelectedSkills([...selectedSkills, skill]);
+// //       setSearchedSkill(""); // Clear the search input
+// //       setSearchResults([]); // Clear search results
+// //     }
+// //   };
+
+// //   const handleRemoveSkill = (skillToRemove) => {
+// //     const updatedSkills = selectedSkills.filter((skill) => skill !== skillToRemove);
+// //     setSelectedSkills(updatedSkills);
+// //   };
+
+// //   const handleSubmit = async (event) => {
+// //     event.preventDefault();
+
+// //     // Prepare request data
+// //     const requestData = {
+// //       skills: selectedSkills.join(", "),
+// //       depth_of_knowledge: depthOfKnowledge,
+// //       company_target: companyTarget,
+// //       origin_target: originTarget,
+// //     };
+
+// //     try {
+// //       const response = await fetch("https://proconnect-backend.onrender.com/user/make_request", {
+// //         method: "POST",
+// //         headers: {
+// //           "Content-Type": "application/json",
+// //           authorization: "Bearer " + localStorage.getItem("token"),
+// //         },
+// //         body: JSON.stringify(requestData),
+// //       });
+
+// //       if (!response.ok) {
+// //         const errorMessage = await response.json();
+// //         setError(errorMessage.message);
+// //       } else {
+// //         setSuccessMessage("Interview request made successfully.");
+// //         // Redirect to a success page or update UI as needed
+// //         navigate("/ActiveStudents"); // Replace with your success page route
+// //       }
+// //     } catch (error) {
+// //       setError("Network error. Please try again later.");
+// //     }
+// //   };
+
+// //   return (
+// //     <div className="container mt-5">
+// //       <div className="row justify-content-center">
+// //         <div className="col-sm-8">
+// //           <div className="card">
+// //             <div className="card-header">
+// //               <b>Interview Request</b>
+// //             </div>
+// //             <div className="card-body">
+// //               {successMessage && (
+// //                 <div className="alert alert-success">{successMessage}</div>
+// //               )}
+// //               {error && <div className="alert alert-danger">{error}</div>}
+// //               <form onSubmit={handleSubmit}>
+// //                 <div className="form-group">
+// //                   <label>Add Skills:</label>
+// //                   <div className="input-group">
+// //                     <input
+// //                       type="text"
+// //                       className="form-control"
+// //                       placeholder="Search for a skill"
+// //                       value={searchedSkill}
+// //                       onChange={handleSearchSkill}
+// //                     />
+// //                     <div className="input-group-append">
+// //                       <button
+// //                         type="button"
+// //                         className="btn btn-primary"
+// //                         onClick={() => handleAddSkill(searchedSkill)}
+// //                       >
+// //                         Add
+// //                       </button>
+// //                     </div>
+// //                   </div>
+// //                   <div className="search-results secondary" >
+// //                     {searchResults.map((skill, index) => (
+// //                       <div
+// //                         key={index}
+// //                         className="dropdown-item"
+// //                         onClick={() => handleAddSkill(skill)}
+// //                       >
+// //                         {skill}
+// //                       </div>
+// //                     ))}
+// //                   </div>
+// //                 </div>
+// //                 <div className="form-group">
+// //                   <label>Selected Skills:</label>
+// //                   <div className="selected-skills">
+// //                     {selectedSkills.map((skill, index) => (
+// //                       <span key={index} className="badge badge-primary skill-badge">
+// //                         {skill}
+// //                         <span
+// //                           className="remove-skill"
+// //                           onClick={() => handleRemoveSkill(skill)}
+// //                         >
+// //                           &times;
+// //                         </span>
+// //                       </span>
+// //                     ))}
+// //                   </div>
+// //                 </div>
+// //                 <div className="form-group">
+// //                   <label>Depth of Knowledge:</label>
+// //                   <input
+// //                     type="text"
+// //                     className="form-control"
+// //                     value={depthOfKnowledge}
+// //                     onChange={(e) => setDepthOfKnowledge(e.target.value)}
+// //                   />
+// //                 </div>
+// //                 <div className="form-group">
+// //                   <label>Company Target:</label>
+// //                   <input
+// //                     type="text"
+// //                     className="form-control"
+// //                     value={companyTarget}
+// //                     onChange={(e) => setCompanyTarget(e.target.value)}
+// //                   />
+// //                 </div>
+// //                 <div className="form-group">
+// //                   <label>Origin Target:</label>
+// //                   <input
+// //                     type="text"
+// //                     className="form-control"
+// //                     value={originTarget}
+// //                     onChange={(e) => setOriginTarget(e.target.value)}
+// //                   />
+// //                 </div>
+// //                 <button type="submit" className="btn btn-primary">
+// //                   Submit Request
+// //                 </button>
+// //               </form>
+// //             </div>
+// //           </div>
+// //         </div>
+// //       </div>
+// //     </div>
+// //   );
+// // };
+
+// // export default MakeRequest;
+
+// import React, { useState } from "react";
+// import { useNavigate } from "react-router-dom";
+
+// const MakeRequest = () => {
+//   const navigate = useNavigate();
+//   const [searchedSkill, setSearchedSkill] = useState("");
+//   const [searchResults, setSearchResults] = useState([]);
+//   const [selectedSkills, setSelectedSkills] = useState([]);
+//   const [depthOfKnowledge, setDepthOfKnowledge] = useState("");
+//   const [selectedCompany, setSelectedCompany] = useState("");
+//   const [selectedOrigin, setSelectedOrigin] = useState("");
+//   const [error, setError] = useState("");
+//   const [successMessage, setSuccessMessage] = useState("");
+
+//   const sampleSkills = ["React", "Express", "Node", "Python", "Java"];
+//   const sampleCompanies = ["Adobe", "Salesforce", "Amazon", "Microsoft", "Infosys"];
+//   const sampleOrigins = ["India", "America", "US"];
+
+//   const handleSearchSkill = (event) => {
+//     const skillToSearch = event.target.value;
+//     setSearchedSkill(skillToSearch);
+
+//     // Filter the sample skills based on the search query
+//     const filteredSkills = sampleSkills.filter(
+//       (skill) =>
+//         skill.toLowerCase().includes(skillToSearch.toLowerCase())
+//     );
+//     setSearchResults(filteredSkills);
+//   };
+
+//   const handleAddSkill = (skill) => {
+//     if (!selectedSkills.includes(skill)) {
+//       setSelectedSkills([...selectedSkills, skill]);
+//       setSearchedSkill(""); // Clear the search input
+//       setSearchResults([]); // Clear search results
+//     }
+//   };
+
+//   const handleRemoveSkill = (skillToRemove) => {
+//     const updatedSkills = selectedSkills.filter((skill) => skill !== skillToRemove);
+//     setSelectedSkills(updatedSkills);
+//   };
+
+//   const handleSubmit = async (event) => {
+//     event.preventDefault();
+
+//     // Prepare request data
+//     const requestData = {
+//       skills: selectedSkills.join(", "),
+//       depth_of_knowledge: depthOfKnowledge,
+//       company_target: selectedCompany,
+//       origin_target: selectedOrigin,
+//     };
+
+//     try {
+//       const response = await fetch("https://proconnect-backend.onrender.com/user/make_request", {
+//         method: "POST",
+//         headers: {
+//           "Content-Type": "application/json",
+//           authorization: "Bearer " + localStorage.getItem("token"),
+//         },
+//         body: JSON.stringify(requestData),
+//       });
+
+//       if (!response.ok) {
+//         const errorMessage = await response.json();
+//         setError(errorMessage.message);
+//       } else {
+//         setSuccessMessage("Interview request made successfully.");
+//         // Redirect to a success page or update UI as needed
+//         navigate("/ActiveStudents"); // Replace with your success page route
+//       }
+//     } catch (error) {
+//       setError("Network error. Please try again later.");
+//     }
+//   };
+
+//   return (
+//     <div className="container mt-5">
+//       <div className="row justify-content-center">
+//         <div className="col-sm-8">
+//           <div className="card">
+//             <div className="card-header">
+//               <b>Interview Request</b>
+//             </div>
+//             <div className="card-body">
+//               {successMessage && (
+//                 <div className="alert alert-success">{successMessage}</div>
+//               )}
+//               {error && <div className="alert alert-danger">{error}</div>}
+//               <form onSubmit={handleSubmit}>
+//                 <div className="form-group">
+//                   <label>Add Skills:</label>
+//                   <div className="input-group">
+//                     <input
+//                       type="text"
+//                       className="form-control"
+//                       placeholder="Search for a skill"
+//                       value={searchedSkill}
+//                       onChange={handleSearchSkill}
+//                     />
+//                     <div className="input-group-append">
+//                       <button
+//                         type="button"
+//                         className="btn btn-primary"
+//                         onClick={() => handleAddSkill(searchedSkill)}
+//                       >
+//                         Add
+//                       </button>
+//                     </div>
+//                   </div>
+//                   {searchedSkill && (
+//                     <div className="list-group skill-list">
+//                       {searchResults.map((skill, index) => (
+//                         <div
+//                           key={index}
+//                           className="list-group-item list-group-item-action"
+//                           onClick={() => handleAddSkill(skill)}
+//                         >
+//                           {skill}
+//                         </div>
+//                       ))}
+//                     </div>
+//                   )}
+//                 </div>
+//                 <div className="form-group">
+//                   <label>Selected Skills:</label>
+//                   <div className="selected-skills">
+//                     {selectedSkills.map((skill, index) => (
+//                       <span key={index} className="badge badge-primary skill-badge">
+//                         {skill}
+//                         <span
+//                           className="remove-skill"
+//                           onClick={() => handleRemoveSkill(skill)}
+//                         >
+//                           &times;
+//                         </span>
+//                       </span>
+//                     ))}
+//                   </div>
+//                 </div>
+//                 <div className="form-group">
+//                   <label>Depth of Knowledge:</label>
+//                   <input
+//                     type="text"
+//                     className="form-control"
+//                     value={depthOfKnowledge}
+//                     onChange={(e) => setDepthOfKnowledge(e.target.value)}
+//                   />
+//                 </div>
+//                 <div className="form-group">
+//                   <label>Select Company:</label>
+//                   <select
+//                     className="form-control"
+//                     value={selectedCompany}
+//                     onChange={(e) => setSelectedCompany(e.target.value)}
+//                   >
+//                     <option value="">Select Company</option>
+//                     {sampleCompanies.map((company, index) => (
+//                       <option key={index} value={company}>
+//                         {company}
+//                       </option>
+//                     ))}
+//                   </select>
+//                 </div>
+//                 <div className="form-group">
+//                   <label>Select Origin:</label>
+//                   <select
+//                     className="form-control"
+//                     value={selectedOrigin}
+//                     onChange={(e) => setSelectedOrigin(e.target.value)}
+//                   >
+//                     <option value="">Select Origin</option>
+//                     {sampleOrigins.map((origin, index) => (
+//                       <option key={index} value={origin}>
+//                         {origin}
+//                       </option>
+//                     ))}
+//                   </select>
+//                 </div>
+//                 <button type="submit" className="btn btn-primary">
+//                   Submit Request
+//                 </button>
+//               </form>
+//             </div>
+//           </div>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default MakeRequest;
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const MakeRequest = () => {
   const navigate = useNavigate();
-  const [skills, setSkills] = useState([]);
-  const [depthOfKnowledge, setDepthOfKnowledge] = useState("");
-  const [companyTarget, setCompanyTarget] = useState("");
-  const [originTarget, setOriginTarget] = useState("");
+  const [searchedSkill, setSearchedSkill] = useState("");
+  const [searchResults, setSearchResults] = useState([]);
+  const [selectedSkills, setSelectedSkills] = useState([]);
+  const [depthOfKnowledge, setDepthOfKnowledge] = useState(""); // Updated depthOfKnowledge state
+  const [selectedCompany, setSelectedCompany] = useState("");
+  const [selectedOrigin, setSelectedOrigin] = useState("");
   const [error, setError] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
 
-  const handleSkillsChange = (event) => {
-    setSkills(event.target.value.split(",").map((skill) => skill.trim()));
+  const sampleSkills = ["React", "Express", "Node", "Python", "Java"];
+  const sampleCompanies = ["Adobe", "Salesforce", "Amazon", "Microsoft", "Infosys"];
+  const sampleOrigins = ["India", "America", "US"];
+
+  const handleSearchSkill = (event) => {
+    const skillToSearch = event.target.value;
+    setSearchedSkill(skillToSearch);
+
+    // Filter the sample skills based on the search query
+    const filteredSkills = sampleSkills.filter(
+      (skill) =>
+        skill.toLowerCase().includes(skillToSearch.toLowerCase())
+    );
+    setSearchResults(filteredSkills);
   };
 
-  const handleDepthOfKnowledgeChange = (event) => {
-    setDepthOfKnowledge(event.target.value);
+  const handleAddSkill = (skill) => {
+    if (!selectedSkills.includes(skill)) {
+      setSelectedSkills([...selectedSkills, skill]);
+      setSearchedSkill(""); // Clear the search input
+      setSearchResults([]); // Clear search results
+    }
   };
 
-  const handleCompanyTargetChange = (event) => {
-    setCompanyTarget(event.target.value);
-  };
-
-  const handleOriginTargetChange = (event) => {
-    setOriginTarget(event.target.value);
+  const handleRemoveSkill = (skillToRemove) => {
+    const updatedSkills = selectedSkills.filter((skill) => skill !== skillToRemove);
+    setSelectedSkills(updatedSkills);
   };
 
   const handleSubmit = async (event) => {
@@ -31,10 +543,10 @@ const MakeRequest = () => {
 
     // Prepare request data
     const requestData = {
-      skills,
+      skills: selectedSkills.join(", "),
       depth_of_knowledge: depthOfKnowledge,
-      company_target: companyTarget,
-      origin_target: originTarget,
+      company_target: selectedCompany,
+      origin_target: selectedOrigin,
     };
 
     try {
@@ -75,40 +587,97 @@ const MakeRequest = () => {
               {error && <div className="alert alert-danger">{error}</div>}
               <form onSubmit={handleSubmit}>
                 <div className="form-group">
-                  <label>Skills (comma-separated):</label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    value={skills.join(", ")}
-                    onChange={handleSkillsChange}
-                  />
+                  <label>Add Skills:</label>
+                  <div className="input-group">
+                    <input
+                      type="text"
+                      className="form-control"
+                      placeholder="Search for a skill"
+                      value={searchedSkill}
+                      onChange={handleSearchSkill}
+                    />
+                    <div className="input-group-append">
+                      <button
+                        type="button"
+                        className="btn btn-primary"
+                        onClick={() => handleAddSkill(searchedSkill)}
+                      >
+                        Add
+                      </button>
+                    </div>
+                  </div>
+                  {searchedSkill && (
+                    <div className="list-group skill-list">
+                      {searchResults.map((skill, index) => (
+                        <div
+                          key={index}
+                          className="list-group-item list-group-item-action"
+                          onClick={() => handleAddSkill(skill)}
+                        >
+                          {skill}
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+                <div className="form-group">
+                  <label>Selected Skills:</label>
+                  <div className="selected-skills">
+                    {selectedSkills.map((skill, index) => (
+                      <span key={index} className="badge badge-primary skill-badge">
+                        {skill}
+                        <span
+                          className="remove-skill"
+                          onClick={() => handleRemoveSkill(skill)}
+                        >
+                          &times;
+                        </span>
+                      </span>
+                    ))}
+                  </div>
                 </div>
                 <div className="form-group">
                   <label>Depth of Knowledge:</label>
-                  <input
-                    type="text"
+                  <select
                     className="form-control"
                     value={depthOfKnowledge}
-                    onChange={handleDepthOfKnowledgeChange}
-                  />
+                    onChange={(e) => setDepthOfKnowledge(e.target.value)}
+                  >
+                    <option value="">Select Depth of Knowledge</option>
+                    <option value="High">High</option>
+                    <option value="Medium">Medium</option>
+                    <option value="Low">Low</option>
+                  </select>
                 </div>
                 <div className="form-group">
-                  <label>Company Target:</label>
-                  <input
-                    type="text"
+                  <label>Select Company:</label>
+                  <select
                     className="form-control"
-                    value={companyTarget}
-                    onChange={handleCompanyTargetChange}
-                  />
+                    value={selectedCompany}
+                    onChange={(e) => setSelectedCompany(e.target.value)}
+                  >
+                    <option value="">Select Company</option>
+                    {sampleCompanies.map((company, index) => (
+                      <option key={index} value={company}>
+                        {company}
+                      </option>
+                    ))}
+                  </select>
                 </div>
                 <div className="form-group">
-                  <label>Origin Target:</label>
-                  <input
-                    type="text"
+                  <label>Select Origin:</label>
+                  <select
                     className="form-control"
-                    value={originTarget}
-                    onChange={handleOriginTargetChange}
-                  />
+                    value={selectedOrigin}
+                    onChange={(e) => setSelectedOrigin(e.target.value)}
+                  >
+                    <option value="">Select Origin</option>
+                    {sampleOrigins.map((origin, index) => (
+                      <option key={index} value={origin}>
+                        {origin}
+                      </option>
+                    ))}
+                  </select>
                 </div>
                 <button type="submit" className="btn btn-primary">
                   Submit Request

@@ -1,10 +1,21 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faEnvelope,
+  faGraduationCap,
+  faUniversity,
+  faBriefcase,
+  faGlobe,
+  faFileAlt,
+  faMoneyCheckAlt,
+} from "@fortawesome/free-solid-svg-icons";
 import profileLogo from "../images/ProfileLogo.png";
 
 const ProfessionalProfile = () => {
   const [profileData, setProfileData] = useState(null);
   const [error, setError] = useState("");
+  const [showAllSkills, setShowAllSkills] = useState(false);
 
   useEffect(() => {
     const fetchProfileData = async () => {
@@ -40,51 +51,75 @@ const ProfessionalProfile = () => {
     height: "80%",
   };
 
+  const profileCardStyle = {
+    boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+    padding: "20px",
+    borderRadius: "8px",
+  };
+
+  const skillsToShow = showAllSkills
+    ? profileData?.skills
+    : profileData?.skills.slice(0, 7);
+
+  const toggleSkillsView = () => {
+    setShowAllSkills(!showAllSkills);
+  };
+
   return (
-    <div  style={{marginTop:"8%"}}>
+    <div style={{ marginTop: "8%" }}>
       {error.length === 0 && profileData && (
-        
-       
-          
         <div className="row">
           <div className="col-md-6">
-            <div className="card">
+            <div className="card" style={profileCardStyle}>
               <div className="card-body">
                 <h2 className="card-title">{profileData.username}'s Profile</h2>
                 <ul className="list-group">
                   <li className="list-group-item">
+                    <FontAwesomeIcon icon={faEnvelope} className="mr-2" />
                     <strong>Email:</strong> {profileData.email}
                   </li>
                   <li className="list-group-item">
-                    <strong>Skills:</strong> {profileData.skills.join(", ")}
+                    <FontAwesomeIcon icon={faFileAlt} className="mr-2" />
+                    <strong>Skills:</strong>{" "}
+                    {skillsToShow.join(", ")}
+                    {!showAllSkills && profileData.skills.length > 7 && (
+                      <button
+                        className="btn btn-link"
+                        onClick={toggleSkillsView}
+                      >
+                        View More
+                      </button>
+                    )}
                   </li>
                   <li className="list-group-item">
+                    <FontAwesomeIcon icon={faUniversity} className="mr-2" />
                     <strong>University:</strong> {profileData.universityname}
                   </li>
                   <li className="list-group-item">
+                    <FontAwesomeIcon icon={faGraduationCap} className="mr-2" />
                     <strong>Years of Experience:</strong>{" "}
                     {profileData.yearsofexperience}
                   </li>
                   <li className="list-group-item">
+                    <FontAwesomeIcon icon={faBriefcase} className="mr-2" />
                     <strong>Currently Working:</strong>{" "}
                     {profileData.currentlyworking}
                   </li>
                   <li className="list-group-item">
-                    <strong>Current Role:</strong> {profileData.currentrole}
-                  </li>
-                  <li className="list-group-item">
+                    <FontAwesomeIcon icon={faGlobe} className="mr-2" />
                     <strong>Origin:</strong> {profileData.origin}
                   </li>
                   <li className="list-group-item">
+                    <FontAwesomeIcon icon={faMoneyCheckAlt} className="mr-2" />
                     <strong>LinkedIn:</strong> {profileData.linkedin}
                   </li>
-                  <Link
-                className="btn btn-primary mt-4"
-                to="/editProfessionalProfile"
-              >
-                Edit Profile
-              </Link>
                 </ul>
+                <Link
+                  className="btn btn-primary mt-4"
+                  to="/editProfessionalProfile"
+                >
+                  Edit Profile
+                </Link>
               </div>
             </div>
           </div>
@@ -96,11 +131,9 @@ const ProfessionalProfile = () => {
                 style={imageStyle}
                 className="img-fluid rounded-circle mt-3"
               />
-              
             </div>
           </div>
         </div>
-       
       )}
       {!profileData && (
         <div className="alert alert-danger mt-3">
@@ -116,7 +149,6 @@ const ProfessionalProfile = () => {
         </div>
       )}
     </div>
-    
   );
 };
 
