@@ -6,7 +6,6 @@ import {
   faUniversity,
   faGraduationCap,
   faFileAlt,
-  faMoneyCheckAlt,
   faCalendar,
   faSchool,
 } from "@fortawesome/free-solid-svg-icons";
