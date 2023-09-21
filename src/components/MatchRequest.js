@@ -12,7 +12,7 @@ const RequestCard = ({ request, onConnectClick }) => {
         <div className="card-body">
           <h5 className="card-title">{userData.username}'s Request</h5>
           <div>
-            <i>profile match: {percentage % 100}%</i>
+            <i>profile match: {percentage % 101}%</i>
           </div>
           <br></br>
           {/* Rest of your card content */}
