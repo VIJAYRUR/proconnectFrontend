@@ -1,5 +1,3 @@
-
-
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -35,7 +33,7 @@ const ScheduledProfessional = () => {
             method: "GET",
             headers: {
               "Content-Type": "application/json",
-              authorization: "Bearer " + localStorage.getItem("token"),
+              Authorization: "Bearer " + localStorage.getItem("token"),
             },
           }
         );
@@ -43,19 +41,11 @@ const ScheduledProfessional = () => {
         if (response.ok) {
           const data = await response.json();
           setInterviews(data);
-
-         
         } else {
           console.error(
             "Error fetching scheduled interviews:",
             response.statusText
           );
-
-          console.log(data[0])
-        } else {
-          console.error("Error fetching scheduled interviews:", response.statusText);
-
-          console.log("error");
         }
       } catch (error) {
         console.error("Network error:", error);
@@ -84,7 +74,7 @@ const ScheduledProfessional = () => {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            authorization: "Bearer " + localStorage.getItem("token"),
+            Authorization: "Bearer " + localStorage.getItem("token"),
           },
           body: JSON.stringify({
             interviewer_name: selectedInterview.interviewer_name,
@@ -123,7 +113,6 @@ const ScheduledProfessional = () => {
       ) : (
         <div className="row">
           {interviews[0].map((interview) => (
-
             <div
               key={interview._id}
               className="col-md-4 mb-4"
@@ -133,13 +122,9 @@ const ScheduledProfessional = () => {
               <div
                 className={`card ${
                   hoveredCardId === interview._id ? "hovered-card" : ""
-                }}
+                }`}
                 style={hoveredCardId === interview._id ? cardHoverStyles : {}}
               >
-
-            <div key={interview._id} className="col-md-4 mb-4">
-              <div className="card">
-
                 <div className="card-body">
                   <h5 className="card-title">
                     Interview with {interview.student_name}
