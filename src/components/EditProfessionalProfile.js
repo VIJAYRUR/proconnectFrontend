@@ -19,6 +19,37 @@ const EditProfessionalProfile = () => {
   const [linkedin, setLinkedin] = useState("");
   const [isLoading, setIsLoading] = useState(true);
 
+
+  const sampleSkills = ["React", "Express", "Node", "Python", "Java"];
+  const [searchedSkill, setSearchedSkill] = useState("");
+  const [searchResults, setSearchResults] = useState([]);
+  const [selectedSkills, setSelectedSkills] = useState([]);
+  const handleSearchSkill = (event) => {
+    const skillToSearch = event.target.value;
+    setSearchedSkill(skillToSearch);
+
+    // Filter the sample skills based on the search query
+    const filteredSkills = sampleSkills.filter(
+      (skill) =>
+        skill.toLowerCase().includes(skillToSearch.toLowerCase())
+    );
+    setSearchResults(filteredSkills);
+  };
+  const handleAddSkill = (skill) => {
+    if (!selectedSkills.includes(skill)) {
+      setSelectedSkills([...selectedSkills, skill]);
+      setSearchedSkill(""); // Clear the search input
+      setSearchResults([]); // Clear search results
+    }
+  };
+
+  const handleRemoveSkill = (skillToRemove) => {
+    const updatedSkills = selectedSkills.filter((skill) => skill !== skillToRemove);
+    setSelectedSkills(updatedSkills);
+    console.log(selectedSkills)
+  };
+
+  
   useEffect(() => {
     const fetchProfileData = async () => {
       try {
@@ -46,6 +77,7 @@ const EditProfessionalProfile = () => {
           setCurrentRole(data ? data.currentrole : "");
           setOrigin(data ? data.origin : "");
           setLinkedin(data ? data.linkedin : "");
+          setSelectedSkills(data ? data.skills : [])
         } else {
           setError("Error fetching profile data");
         }
@@ -101,7 +133,7 @@ const EditProfessionalProfile = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const skillsArray = skills.split(",");
+    const skillsArray = selectedSkills;
 
     try {
       const token = localStorage.getItem("token");
@@ -142,8 +174,8 @@ const EditProfessionalProfile = () => {
 
   // Conditional rendering based on isLoading
   return (
-    <div className="container mt-5" style={{marginTop:"8%"}}>
-      <div className="row justify-content-center">
+    <div className="container mt-5" style={{marginTop:"12%"}}>
+      <div className="row justify-content-center" style={{marginTop:"12%"}}>
         <div className="col-sm-8">
           <div className="card">
             <div className="card-header">
@@ -163,13 +195,60 @@ const EditProfessionalProfile = () => {
                   </div>
                 </div>
                 <div className="form-group">
-                  <label>Skills:</label>
+                  {/* <label>Skills:</label>
                   <textarea
                     className="form-control"
                     value={skills}
                     onChange={handleSkillsChange}
-                  />
+                  /> */}
+                  <label>Add Skills:</label>
+                  <div className="input-group">
+                    <input
+                      type="text"
+                      className="form-control"
+                      placeholder="Search for a skill"
+                      value={searchedSkill}
+                      onChange={handleSearchSkill}
+                    />
+                    <div className="input-group-append">
+                      <button
+                        type="button"
+                        className="btn btn-primary"
+                        onClick={() => handleAddSkill(searchedSkill)}
+                      >
+                        Add
+                      </button>
+                    </div>
+                  </div>
+                  {searchedSkill && (
+                    <div className="list-group skill-list">
+                      {searchResults.map((skill, index) => (
+                        <div
+                          key={index}
+                          className="list-group-item list-group-item-action"
+                          onClick={() => handleAddSkill(skill)}
+                        >
+                          {skill}
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                  
                 </div>
+                <label>Selected Skills:</label>
+                  <div className="selected-skills">
+                    {selectedSkills.map((skill, index) => (
+                      <span key={index} className="badge badge-primary skill-badge">
+                        {skill}
+                        <span
+                          className="remove-skill"
+                          onClick={() => handleRemoveSkill(skill)}
+                        >
+                          &times;
+                        </span>
+                      </span>
+                    ))}
+                    </div>
                 <div className="form-group">
                   <label>University Name:</label>
                   <input
@@ -241,3 +320,4 @@ const EditProfessionalProfile = () => {
 };
 
 export default EditProfessionalProfile;
+

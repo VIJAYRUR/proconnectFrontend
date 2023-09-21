@@ -1,27 +1,51 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUniversity, faGraduationCap, faCode } from "@fortawesome/free-solid-svg-icons"; // Import the icons you need
 
 // Create a new component to render individual request cards
+const cardHoverStyles = {
+  transition: "transform 0.2s, box-shadow 0.2s",
+  boxShadow: "0 0 5px rgba(0, 0, 0, 0.2)",
+};
 const RequestCard = ({ request, onConnectClick }) => {
   const percentage = request[0];
   const userData = request[1];
+  const [isHovered, setIsHovered] = useState(false);
+
+  const handleMouseEnter = () => {
+    setIsHovered(true);
+  };
+
+  const handleMouseLeave = () => {
+    setIsHovered(false);
+  };
 
   return (
     <div className="col-md-4 mb-4">
-      <div className="card">
+      <div
+        className="card request-card"
+        style={isHovered ? cardHoverStyles : {}}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+      >
         <div className="card-body">
           <h5 className="card-title">{userData.username}'s Request</h5>
           <div>
             <i>profile match: {percentage % 101}%</i>
           </div>
           <br></br>
-          {/* Rest of your card content */}
-          <p>university: {userData.university}</p>
-          <p>course: {userData.course}</p>
-          <p>CGPA: {userData.CGPA}</p>
-          <p>passoutdate: {userData.passoutdate}</p>
+          {/* University Icon */}
           <p>
-            Skills to be questioned :{" "}
+            <FontAwesomeIcon icon={faUniversity} /> <strong>University:</strong> {userData.university}
+          </p>
+          {/* GPA Icon */}
+          <p>
+            <FontAwesomeIcon icon={faGraduationCap} /> <strong>GPA:</strong> {userData.CGPA}
+          </p>
+          {/* Skills Icon */}
+          <p>
+            <FontAwesomeIcon icon={faCode} /> <strong>Skills to be questioned:</strong>{" "}
             {userData.skills_to_be_questioned.join(",")}
           </p>
           <button

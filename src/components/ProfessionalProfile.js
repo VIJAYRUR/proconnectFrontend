@@ -1,3 +1,5 @@
+
+
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -9,6 +11,7 @@ import {
   faGlobe,
   faFileAlt,
   faMoneyCheckAlt,
+  faLinke
 } from "@fortawesome/free-solid-svg-icons";
 import profileLogo from "../images/ProfileLogo.png";
 
@@ -47,8 +50,8 @@ const ProfessionalProfile = () => {
   }, []);
 
   const imageStyle = {
-    maxWidth: "85%",
-    height: "80%",
+    maxWidth: "50%",
+    height: "auto",
   };
 
   const profileCardStyle = {
@@ -66,9 +69,9 @@ const ProfessionalProfile = () => {
   };
 
   return (
-    <div style={{ marginTop: "8%" }}>
+    <div className="container mt-5">
       {error.length === 0 && profileData && (
-        <div className="row">
+        <div className="row" style={{marginTop:'10%'}}>
           <div className="col-md-6">
             <div className="card" style={profileCardStyle}>
               <div className="card-body">
@@ -110,16 +113,10 @@ const ProfessionalProfile = () => {
                     <strong>Origin:</strong> {profileData.origin}
                   </li>
                   <li className="list-group-item">
-                    <FontAwesomeIcon icon={faMoneyCheckAlt} className="mr-2" />
+                  <FontAwesomeIcon icon="fa-brands fa-linkedin" />
                     <strong>LinkedIn:</strong> {profileData.linkedin}
                   </li>
                 </ul>
-                <Link
-                  className="btn btn-primary mt-4"
-                  to="/editProfessionalProfile"
-                >
-                  Edit Profile
-                </Link>
               </div>
             </div>
           </div>
@@ -131,12 +128,17 @@ const ProfessionalProfile = () => {
                 style={imageStyle}
                 className="img-fluid rounded-circle mt-3"
               />
+              <div className="mt-4">
+                <Link className="btn btn-primary" to="/editProfessionalProfile">
+                  Edit Profile
+                </Link>
+              </div>
             </div>
           </div>
         </div>
       )}
       {!profileData && (
-        <div className="alert alert-danger mt-3">
+        <div className="alert alert-danger" style={{marginTop:"20%"}}>
           <p>
             Please create your profile, if you have already done so, please try
             again later.

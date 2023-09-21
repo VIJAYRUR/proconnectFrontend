@@ -1,7 +1,7 @@
 
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
+import { faGraduationCap, faCode } from "@fortawesome/free-solid-svg-icons";
 const MakeRequest = () => {
   const navigate = useNavigate();
   const [searchedSkill, setSearchedSkill] = useState("");
@@ -196,3 +196,4 @@ const MakeRequest = () => {
 };
 
 export default MakeRequest;
+

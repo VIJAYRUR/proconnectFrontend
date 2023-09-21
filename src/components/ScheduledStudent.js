@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUniversity, faGraduationCap, faCode } from "@fortawesome/free-solid-svg-icons"; // Import the icons you need
 
 const ScheduledStudent = () => {
   const [scheduledRequest, setScheduledRequest] = useState(null);
@@ -74,27 +76,6 @@ const ScheduledStudent = () => {
                     <strong>Interviewer Experience:</strong>{" "}
                     {request.interviewer_experience}
                   </div>
-                  <div>
-                    <strong>Student Name:</strong> {request.student_name}
-                  </div>
-                  <div>
-                    <strong>Student Email:</strong> {request.student_email}
-                  </div>
-                  <div>
-                    <strong>Student University:</strong>{" "}
-                    {request.student_university}
-                  </div>
-                  <div>
-                    <strong>Student Course:</strong> {request.student_course}
-                  </div>
-                  <div>
-                    <strong>Student CGPA:</strong> {request.student_CGPA}
-                  </div>
-                  <div>
-                    <strong>Student Passout Date:</strong>{" "}
-                    {request.student_passoutdate}
-                  </div>
-
                   <i>Make further communication with Interviewer by email</i>
                 </div>
               ))}
