@@ -56,9 +56,9 @@ const Report = () => {
 
   return (
     <div className="container mt-5">
-      <h2>Report Page</h2>
       <form onSubmit={handleSubmit}>
-        <div className="form-group">
+        <div className="form-group" style={{marginTop:"13%"}}>
+      <h2 style={{textAlign:"center"}}>Report Page</h2>
           <label>Email</label>
           <input type="text" className="form-control" value={email} readOnly />
         </div>

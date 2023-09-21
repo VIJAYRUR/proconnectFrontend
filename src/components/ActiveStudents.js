@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUniversity, faGraduationCap, faCode,faLightbulb,faBuilding,faLocation } from "@fortawesome/free-solid-svg-icons"; // Import the icons you need
 
 const ActiveStudents = () => {
   const navigate = useNavigate();
@@ -66,22 +68,26 @@ const ActiveStudents = () => {
       {activeRequest ? (
         <div className="card mt-3">
           <div className="card-body">
-            <div>
-              <strong>Skills:</strong>{" "}
+            <p>
+            <FontAwesomeIcon icon={faCode} /> 
+              <strong> Skills:</strong>{" "}
               {activeRequest.skills_to_be_questioned
                 ? activeRequest.skills_to_be_questioned.join(", ")
                 : ""}
-            </div>
-            <div>
-              <strong>Depth of Knowledge:</strong>{" "}
+            </p>
+            <p>
+            <FontAwesomeIcon icon={faLightbulb} />
+              <strong> Depth of Knowledge:</strong>{" "}
               {activeRequest.depth_of_knowledge}
-            </div>
-            <div>
-              <strong>Company Target:</strong> {activeRequest.company_target}
-            </div>
-            <div>
-              <strong>Origin Target:</strong> {activeRequest.origin_target}
-            </div>
+            </p>
+            <p>
+            <FontAwesomeIcon icon={faBuilding} />
+              <strong> Company Target:</strong> {activeRequest.company_target}
+            </p>
+            <p>
+            <FontAwesomeIcon icon={faLocation} />
+              <strong> Origin Target:</strong> {activeRequest.origin_target}
+            </p>
             <button
               className="btn btn-danger mt-3"
               onClick={handleDeleteRequest}

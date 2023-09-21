@@ -18,7 +18,7 @@ const Navbar = () => {
     }
   };
   return (
-    <div style={{marginTop:"8%"} }>
+    <div>
       <nav
         className="navbar navbar-expand-md h-5 py-1 fixed-top"
         style={{
@@ -120,7 +120,7 @@ const Navbar = () => {
                 
             </li>
               </ul>
-          {!localStorage.getItem("token") && (
+          {localStorage.getItem("token")===null && (
             <form className=" my-2 my-lg-0 pr-3">
               <a
                 className="btn my-2 my-sm-0"
@@ -151,9 +151,9 @@ const Navbar = () => {
               <div class="dropdown-menu">
               <div >{localStorage.getItem("role")==="student" && <a href="/StudentProfile" class="dropdown-item">Profile </a> }
               {localStorage.getItem("role")==="professional" && <a href="/ProfessionalProfile" class="dropdown-item"> Profile</a> }</div>
-                <Link to="/report" class="dropdown-item" href="#">
+                <a href="/report" class="dropdown-item" >
                   Report
-                </Link>
+                </a>
                 <div class="dropdown-divider"></div>
                 <button
                   class="dropdown-item secondary"
