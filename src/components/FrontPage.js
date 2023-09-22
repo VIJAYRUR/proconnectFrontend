@@ -81,7 +81,7 @@ const FrontPage = () => {
                         href="/ScheduledStudent"
                       >
                         To Dashboard
-                      </Link>
+                      </a>
                     )}
                     {localStorage.getItem("role") === "professional" && (
                       <a
@@ -99,7 +99,7 @@ const FrontPage = () => {
                         href="/ScheduledProfessional"
                       >
                         To Dashboard
-                      </Link>
+                      </a>
                     )}
                   </>
                 )}
