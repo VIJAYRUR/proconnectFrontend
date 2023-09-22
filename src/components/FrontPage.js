@@ -46,6 +46,7 @@ const FrontPage = () => {
                 CONNECTING THE STUDENTS WITH WORKING PROFESSIONALS
               </h3>
               <div style={{ textAlign: "center" }}>
+                { localStorage.getItem("token")==null ? 
                 <Link
                   className="btn my-2 my-sm-0 shadow rounded"
                   style={{
@@ -62,6 +63,23 @@ const FrontPage = () => {
                 >
                   Sign Up
                 </Link>
+                :
+                <Link
+                  className="btn my-2 my-sm-0 shadow rounded"
+                  style={{
+                    backgroundColor: "#4455a4",
+                    color: "#eeeeee",
+                    fontWeight: "bold",
+                    fontSize: "18px",
+                    width: "100%",
+                    maxWidth: "220px",
+                    marginTop: "20px",
+                  }}
+                  type="submit"
+                  to="/dashboard">
+                    To Dashboard
+                  </Link>
+      }
               </div>
             </div>
           </div>
