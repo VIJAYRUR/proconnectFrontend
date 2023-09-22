@@ -103,8 +103,10 @@ const ScheduledProfessional = () => {
 
   function checkDateTime(interview) {
     const currentDate = new Date();
-    const interviewDate = new Date(`${interview.date}T${interview.time}`);
-  
+    const interviewDate = new Date(
+    `${interview.date}T${interview.time}:00.000Z`
+  );
+
   return currentDate >= interviewDate;
   }
 
