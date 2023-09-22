@@ -1,29 +1,53 @@
 import React, { useEffect, useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faUniversity,
+  faGraduationCap,
+  faCode,
+  faMessage,
+  faClock,
+  faEnvelope,
+  faCalendar
+} from "@fortawesome/free-solid-svg-icons"; // Import the icons you need
+
+const cardHoverStyles = {
+  transition: "transform 0.2s, box-shadow 0.2s",
+  boxShadow: "0 0 5px rgba(0, 0, 0, 0.2)",
+};
 
 const StudentReview = () => {
   const [feedbackHistory, setFeedbackHistory] = useState([]);
-  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [hoveredCardId, setHoveredCardId] = useState(null);
 
   useEffect(() => {
+    // Fetch feedback history for the professional here
     const fetchFeedbackHistory = async () => {
       try {
-        const response = await fetch("https://proconnect-backend.onrender.com/user/student_history", {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            authorization: "Bearer " + localStorage.getItem("token"),
-          },
-        });
+        const response = await fetch(
+          "https://proconnect-backend.onrender.com/user/student_history",
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              authorization: "Bearer " + localStorage.getItem("token"),
+            },
+          }
+        );
 
-        if (!response.ok) {
-          const errorMessage = await response.text();
-          setError(errorMessage);
-        } else {
+        if (response.ok) {
           const data = await response.json();
           setFeedbackHistory(data);
+        } else {
+          console.error(
+            "Error fetching feedback history:",
+            response.statusText
+          );
         }
       } catch (error) {
-        setError("Network error. Please try again later.");
+        console.error("Network error:", error);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -31,39 +55,54 @@ const StudentReview = () => {
   }, []);
 
   return (
-    <div className="container mt-5">
-      <h2>Feedback History</h2>
-      {error && <div className="alert alert-danger">{error}</div>}
-      {feedbackHistory.length > 0 ? (
-        feedbackHistory.map((feedback, index) => (
-          <div className="card mt-3" key={index}>
-            <div className="card-body">
-              <div>
-                <strong>Date:</strong> {feedback.date}
-              </div>
-              <div>
-                <strong>Time:</strong> {feedback.time}
-              </div>
-              <div>
-                <strong>Interviewer Name:</strong> {feedback.interviewer_name}
-              </div>
-              <div>
-                <strong>Interviewer Email:</strong> {feedback.interviewer_email}
-              </div>
-              <div>
-                <strong>Student Name:</strong> {feedback.student_name}
-              </div>
-              <div>
-                <strong>Student Email:</strong> {feedback.student_email}
-              </div>
-              <div>
-                <strong>Feedback:</strong> {feedback.message}
+    <div className="container mt-2">
+      <h2 className="mb-4" style={{ marginTop: "10%" }}>
+        Feedback History
+      </h2>
+      {loading ? (
+        <p>Loading...</p>
+      ) : feedbackHistory.length === 0 ? (
+        <div className="alert alert-danger">No feedback history found.</div>
+      ) : (
+        <div className="row">
+          {feedbackHistory.map((feedback, index) => (
+            <div
+              key={index}
+              className="col-md-4 mb-4"
+              onMouseEnter={() => setHoveredCardId(index)}
+              onMouseLeave={() => setHoveredCardId(null)}
+            >
+              <div
+                className={`card ${
+                  hoveredCardId === index ? "hovered-card" : ""
+                }`}
+                style={hoveredCardId === index ? cardHoverStyles : {}}
+              >
+                <div className="card-body">
+                  
+                  <p>
+                    <FontAwesomeIcon icon={faCalendar} className="mr-2" />{" "}
+                    <strong>Date:</strong> {feedback.date}
+                  </p>
+                  <p>
+                    <FontAwesomeIcon icon={faClock} className="mr-2" />{" "}
+                    <strong>Time:</strong> {feedback.time}
+                  </p>
+                  <p>
+                    <FontAwesomeIcon icon={faEnvelope} className="mr-2" />{" "}
+                    <strong>Professional Email:</strong> {feedback.interviewer_email}
+                  </p>
+                  
+                  <p>
+                    <FontAwesomeIcon icon={faMessage} className="mr-2" />{" "}
+                    <strong>Messsage:</strong> {feedback.message}
+                  </p>
+
+                </div>
               </div>
             </div>
-          </div>
-        ))
-      ) : (
-        <p>No feedback history found.</p>
+          ))}
+        </div>
       )}
     </div>
   );
