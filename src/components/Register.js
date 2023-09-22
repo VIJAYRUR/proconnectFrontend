@@ -55,7 +55,8 @@ const Register = () => {
       if (response.ok) {
         // Registration was successful
         const data = await response.json();
-        console.log(data.message); // You can handle success messages here
+        
+        window.alert("You can now Login");
         navigate("/login");
       } else {
         // Registration failed
