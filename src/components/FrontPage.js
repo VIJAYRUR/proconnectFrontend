@@ -64,7 +64,7 @@ const FrontPage = () => {
                   Sign Up
                 </Link>
                 :
-                <Link
+{localstorage.getItem("role")==="student" && <Link
                   className="btn my-2 my-sm-0 shadow rounded"
                   style={{
                     backgroundColor: "#4455a4",
@@ -76,9 +76,25 @@ const FrontPage = () => {
                     marginTop: "20px",
                   }}
                   type="submit"
-                  to={localstorage.getItem("role")==="student"?"/scheduledstudent":"/scheduledprofessional"}>
+                  to="/ScheduledStudent">
                     To Dashboard
-                  </Link>
+                  </Link>}
+{localstorage.getItem("role")==="professional" && <Link
+                  className="btn my-2 my-sm-0 shadow rounded"
+                  style={{
+                    backgroundColor: "#4455a4",
+                    color: "#eeeeee",
+                    fontWeight: "bold",
+                    fontSize: "18px",
+                    width: "100%",
+                    maxWidth: "220px",
+                    marginTop: "20px",
+                  }}
+                  type="submit"
+                  to="/ScheduledProfessional">
+                    To Dashboard
+                  </Link>}
+
       }
               </div>
             </div>
