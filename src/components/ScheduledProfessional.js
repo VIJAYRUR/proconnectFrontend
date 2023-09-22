@@ -105,7 +105,7 @@ const ScheduledProfessional = () => {
     const currentDate = new Date();
     
 
-    return currentDate >= interviewDateTime;
+    return currentDate >= interview.date;
   }
 
   return (
