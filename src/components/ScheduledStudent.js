@@ -48,7 +48,7 @@ const ScheduledStudent = () => {
         scheduledRequest.length > 0 ? (
           <div className="card mt-3">
             <div className="card-body">
-              {scheduledRequest.map((request, index) => (
+              {scheduledRequest[0].map((request, index) => (
                 <div key={index}>
                   <div>
                     <strong>Date:</strong> {request.date}
