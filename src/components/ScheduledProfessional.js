@@ -1,49 +1,46 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faEnvelope,
   faUniversity,
   faGraduationCap,
-  faFileAlt,
-  faCalendar,
-  faSchool,
-} from "@fortawesome/free-solid-svg-icons";
+  faCode,
+  faMessage,
+  faClock,
+  faEnvelope,
+  faCalendar
+} from "@fortawesome/free-solid-svg-icons"; // Import the icons you need
 
 const cardHoverStyles = {
   transition: "transform 0.2s, box-shadow 0.2s",
   boxShadow: "0 0 5px rgba(0, 0, 0, 0.2)",
 };
 
-
 const ScheduledProfessional = () => {
-  const navigate = useNavigate();
-  const [interviews, setInterviews] = useState([]);
-  const [selectedInterview, setSelectedInterview] = useState(null);
-  const [feedbackMessage, setFeedbackMessage] = useState("");
+  const [feedbackHistory, setFeedbackHistory] = useState([]);
   const [loading, setLoading] = useState(true);
   const [hoveredCardId, setHoveredCardId] = useState(null);
 
   useEffect(() => {
-    const fetchScheduledInterviews = async () => {
+    // Fetch feedback history for the professional here
+    const fetchFeedbackHistory = async () => {
       try {
         const response = await fetch(
-          "https://proconnect-backend.onrender.com/user/view_interviewer_schedule",
+          "https://proconnect-backend.onrender.com/user/student_history",
           {
             method: "GET",
             headers: {
               "Content-Type": "application/json",
-              Authorization: "Bearer " + localStorage.getItem("token"),
+              authorization: "Bearer " + localStorage.getItem("token"),
             },
           }
         );
 
         if (response.ok) {
           const data = await response.json();
-          setInterviews(data);
+          setFeedbackHistory(data);
         } else {
           console.error(
-            "Error fetching scheduled interviews:",
+            "Error fetching feedback history:",
             response.statusText
           );
         }
@@ -54,197 +51,61 @@ const ScheduledProfessional = () => {
       }
     };
 
-    fetchScheduledInterviews();
+    fetchFeedbackHistory();
   }, []);
 
-  const handleFeedbackClick = (interview) => {
-    setSelectedInterview(interview);
-  };
-
-  const handleFeedbackSubmit = async () => {
-    try {
-      if (!selectedInterview || !selectedInterview.student_name) {
-        console.error("No selected interview to provide feedback for.");
-        return;
-      }
-
-      const response = await fetch(
-        "https://proconnect-backend.onrender.com/user/provide_feedback",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + localStorage.getItem("token"),
-          },
-          body: JSON.stringify({
-            interviewer_name: selectedInterview.interviewer_name,
-            student_name: selectedInterview.student_name,
-            interviewer_email: selectedInterview.interviewer_email,
-            student_email: selectedInterview.student_email,
-            message: feedbackMessage,
-            date: selectedInterview.date,
-            time: selectedInterview.time,
-          }),
-        }
-      );
-
-      if (response.ok) {
-        setFeedbackMessage("");
-        setSelectedInterview(null);
-        navigate("/ProfessionalHistory");
-        window.location.reload();
-      } else {
-        console.error("Error submitting feedback:", response.statusText);
-      }
-    } catch (error) {
-      console.error("Network error:", error);
-    }
-  };
-  function convertDateToISO(dateString) {
-    const parts = dateString.split('-');
-    if (parts.length === 3) {
-      const [day, month, year] = parts;
-      return `${year}-${month}-${day}`;
-    }
-    return null; // Handle invalid input gracefully
-  }
-  
-  function checkDateTime(interview) {
-    const currentDate = new Date();
-    const interviewDateISO = convertDateToISO(interview.date);
-    const interviewDateTime = new Date(
-      `${interviewDateISO}T${interview.time}`
-    );
-  
-    return currentDate > interviewDateTime;
-  }
-  
-  
-  
-
   return (
-    
-    <div className="container mt-5">
-      <h2 className="mb-4">
-        Scheduled Interviews
+    <div className="container mt-2">
+      <h2 className="mb-4" style={{ marginTop: "10%" }}>
+        Feedback History
       </h2>
       {loading ? (
         <p>Loading...</p>
-      ) : interviews.length === 0 ? (
-        <p>No scheduled interviews found.</p>
+      ) : feedbackHistory.length === 0 ? (
+        <div className="alert alert-danger">No feedback history found.</div>
       ) : (
         <div className="row">
-          {interviews[0].map((interview) => (
+          {feedbackHistory.map((feedback, index) => (
             <div
-              key={interview._id}
+              key={index}
               className="col-md-4 mb-4"
-              onMouseEnter={() => setHoveredCardId(interview._id)}
+              onMouseEnter={() => setHoveredCardId(index)}
               onMouseLeave={() => setHoveredCardId(null)}
             >
               <div
                 className={`card ${
-                  hoveredCardId === interview._id ? "hovered-card" : ""
+                  hoveredCardId === index ? "hovered-card" : ""
                 }`}
-                style={hoveredCardId === interview._id ? cardHoverStyles : {}}
+                style={hoveredCardId === index ? cardHoverStyles : {}}
               >
                 <div className="card-body">
-                  <h5 className="card-title">
-                    Interview with {interview.student_name}
-                  </h5>
+                  
                   <p>
-                    <FontAwesomeIcon icon={faUniversity} className="mr-2" />{" "}
-                    University: {interview.student_university}
+                    <FontAwesomeIcon icon={faCalendar} className="mr-2" />{" "}
+                    <strong>Date:</strong> {feedback.date}
                   </p>
                   <p>
-                    <FontAwesomeIcon icon={faSchool} className="mr-2" /> Course:{" "}
-                    {interview.student_course}
+                    <FontAwesomeIcon icon={faClock} className="mr-2" />{" "}
+                    <strong>Time:</strong> {feedback.time}
                   </p>
                   <p>
-                    <FontAwesomeIcon icon={faGraduationCap} className="mr-2" />{" "}
-                    University CGPA: {interview.student_CGPA}
+                    <FontAwesomeIcon icon={faEnvelope} className="mr-2" />{" "}
+                    <strong>Student Email:</strong> {feedback.student_email}
                   </p>
+                  
                   <p>
-                    <FontAwesomeIcon icon={faCalendar} className="mr-2" /> Passout
-                    Date: {interview.student_passoutdate}
+                    <FontAwesomeIcon icon={faMessage} className="mr-2" />{" "}
+                    <strong>Messsage:</strong> {feedback.message}
                   </p>
-                  <p>
-                    <marquee>
-                      <strong>Date: </strong>
-                      {interview.date}, <strong>Time:</strong> {interview.time}
-                    </marquee>
-                  </p>
-                  <button
-                      disabled={!checkDateTime(interview)}
-                      className="btn btn-primary"
-                      data-toggle="modal"
-                      data-target="#feedbackModal"
-                      onClick={() => handleFeedbackClick(interview)}
-                  >
-                    Provide Feedback
-                  </button>
+
                 </div>
               </div>
             </div>
           ))}
         </div>
       )}
-
-      {selectedInterview && (
-        <div className="modal fade" id="feedbackModal" tabIndex="-1">
-          <div className="modal-dialog">
-            <div className="modal-content">
-              <div className="modal-header">
-                <h5 className="modal-title">Provide Feedback</h5>
-                <button
-                  type="button"
-                  className="close"
-                  data-dismiss="modal"
-                  aria-label="Close"
-                  onClick={() => setSelectedInterview(null)}
-                >
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div className="modal-body">
-                {selectedInterview && selectedInterview.student_name && (
-                  <p>
-                    You are providing feedback for the interview with{" "}
-                    <strong>{selectedInterview.student_name}</strong>. Please
-                    enter your feedback message below:
-                  </p>
-                )}
-                <textarea
-                  className="form-control"
-                  rows="4"
-                  placeholder="Enter your feedback message"
-                  value={feedbackMessage}
-                  onChange={(e) => setFeedbackMessage(e.target.value)}
-                ></textarea>
-              </div>
-              <div className="modal-footer">
-                <button
-                  type="button"
-                  className="btn btn-secondary"
-                  data-dismiss="modal"
-                  onClick={() => setSelectedInterview(null)}
-                >
-                  Close
-                </button>
-                <button
-                  type="button"
-                  className="btn btn-primary"
-                  onClick={handleFeedbackSubmit}
-                >
-                  Submit Feedback
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 };
-
 
 export default ScheduledProfessional;
