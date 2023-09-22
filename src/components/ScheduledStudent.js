@@ -102,9 +102,7 @@ const ScheduledStudent = () => {
                     <strong>Interviewer Experience:</strong>{" "}
                     {request.interviewer_experience}
                   </p>
-                  <p>
-                    <i>Make further communication with Interviewer by email</i>
-                  </p>
+                 
                 </div>
               </div>
             </div>
