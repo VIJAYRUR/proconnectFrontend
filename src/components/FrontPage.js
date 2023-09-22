@@ -63,7 +63,7 @@ const FrontPage = () => {
                 >
                   Sign Up
                 </Link>
-                :
+                :(<>
 {localstorage.getItem("role")==="student" && <Link
                   className="btn my-2 my-sm-0 shadow rounded"
                   style={{
@@ -95,7 +95,7 @@ const FrontPage = () => {
                     To Dashboard
                   </Link>}
 
-      }
+                    </>)}
               </div>
             </div>
           </div>
