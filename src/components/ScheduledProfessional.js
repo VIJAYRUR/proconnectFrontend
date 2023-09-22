@@ -1,227 +1,119 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faEnvelope,
   faUniversity,
   faGraduationCap,
-  faFileAlt,
-  faCalendar,
-  faSchool,
-} from "@fortawesome/free-solid-svg-icons";
+  faCode,
+  faClock,
+  faEnvelope,
+} from "@fortawesome/free-solid-svg-icons"; // Import the icons you need
 
 const cardHoverStyles = {
   transition: "transform 0.2s, box-shadow 0.2s",
   boxShadow: "0 0 5px rgba(0, 0, 0, 0.2)",
 };
 
-const ScheduledProfessional = () => {
-  const navigate = useNavigate();
-  const [interviews, setInterviews] = useState([]);
-  const [selectedInterview, setSelectedInterview] = useState(null);
-  const [feedbackMessage, setFeedbackMessage] = useState("");
+const ScheduledStudent = () => {
+  const [scheduledRequest, setScheduledRequest] = useState(null);
+  const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
   const [hoveredCardId, setHoveredCardId] = useState(null);
 
   useEffect(() => {
-    const fetchScheduledInterviews = async () => {
+    const fetchScheduledRequest = async () => {
       try {
         const response = await fetch(
-          "https://proconnect-backend.onrender.com/user/view_interviewer_schedule",
+          "https://proconnect-backend.onrender.com/user/view_student_schedule",
           {
             method: "GET",
             headers: {
               "Content-Type": "application/json",
-              Authorization: "Bearer " + localStorage.getItem("token"),
+              authorization: "Bearer " + localStorage.getItem("token"),
             },
           }
         );
 
-        if (response.ok) {
-          const data = await response.json();
-          setInterviews(data);
+        if (!response.ok) {
+          const errorMessage = await response.text();
+          setError(errorMessage);
         } else {
-          console.error(
-            "Error fetching scheduled interviews:",
-            response.statusText
-          );
+          const data = await response.json();
+          setScheduledRequest(data);
         }
       } catch (error) {
-        console.error("Network error:", error);
+        setError("Network error. Please try again later.");
       } finally {
         setLoading(false);
       }
     };
 
-    fetchScheduledInterviews();
+    fetchScheduledRequest();
   }, []);
-
-  const handleFeedbackClick = (interview) => {
-    setSelectedInterview(interview);
-  };
-
-  const handleFeedbackSubmit = async () => {
-    try {
-      if (!selectedInterview || !selectedInterview.student_name) {
-        console.error("No selected interview to provide feedback for.");
-        return;
-      }
-
-      const response = await fetch(
-        "https://proconnect-backend.onrender.com/user/provide_feedback",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + localStorage.getItem("token"),
-          },
-          body: JSON.stringify({
-            interviewer_name: selectedInterview.interviewer_name,
-            student_name: selectedInterview.student_name,
-            interviewer_email: selectedInterview.interviewer_email,
-            student_email: selectedInterview.student_email,
-            message: feedbackMessage,
-            date: selectedInterview.date,
-            time: selectedInterview.time,
-          }),
-        }
-      );
-
-      if (response.ok) {
-        setFeedbackMessage("");
-        setSelectedInterview(null);
-        navigate("/ProfessionalHistory");
-        window.location.reload();
-      } else {
-        console.error("Error submitting feedback:", response.statusText);
-      }
-    } catch (error) {
-      console.error("Network error:", error);
-    }
-  };
 
   return (
     <div className="container mt-5">
       <h2 className="mb-4" style={{ marginTop: "10%" }}>
-        Scheduled Interviews
+        Scheduled Requests
       </h2>
       {loading ? (
         <p>Loading...</p>
-      ) : interviews.length === 0 ? (
-        <p>No scheduled interviews found.</p>
+      ) : error || !scheduledRequest ? (
+        <div className="alert alert-danger">No scheduled Requests</div>
+      ) : scheduledRequest.length === 0 ? (
+        <p>No scheduled requests found.</p>
       ) : (
         <div className="row">
-          {interviews[0].map((interview) => (
+          {scheduledRequest.map((request, index) => (
             <div
-              key={interview._id}
+              key={index}
               className="col-md-4 mb-4"
-              onMouseEnter={() => setHoveredCardId(interview._id)}
+              onMouseEnter={() => setHoveredCardId(index)}
               onMouseLeave={() => setHoveredCardId(null)}
             >
               <div
                 className={`card ${
-                  hoveredCardId === interview._id ? "hovered-card" : ""
+                  hoveredCardId === index ? "hovered-card" : ""
                 }`}
-                style={hoveredCardId === interview._id ? cardHoverStyles : {}}
+                style={hoveredCardId === index ? cardHoverStyles : {}}
               >
                 <div className="card-body">
-                  <h5 className="card-title">
-                    Interview with {interview.student_name}
-                  </h5>
+                  <h5 className="card-title">Scheduled Request</h5>
                   <p>
-                    <FontAwesomeIcon icon={faUniversity} className="mr-2" />{" "}
-                    University: {interview.student_university}
+                    <FontAwesomeIcon icon={faCalendar} className="mr-2" />{" "}
+                    <strong>Date:</strong> {request.date}
                   </p>
                   <p>
-                    <FontAwesomeIcon icon={faSchool} className="mr-2" /> Course:{" "}
-                    {interview.student_course}
+                    <FontAwesomeIcon icon={faClock} className="mr-2" />{" "}
+                    <strong>Time:</strong> {request.time}
+                  </p>
+                  <p>
+                    <FontAwesomeIcon icon={faEnvelope} className="mr-2" />{" "}
+                    <strong>Interviewer Email:</strong> {request.interviewer_email}
+                  </p>
+                  <p>
+                    <FontAwesomeIcon icon={faUniversity} className="mr-2" />{" "}
+                    <strong>Interviewer Company:</strong> {request.interviewer_company}
                   </p>
                   <p>
                     <FontAwesomeIcon icon={faGraduationCap} className="mr-2" />{" "}
-                    University CGPA: {interview.student_CGPA}
+                    <strong>Interviewer Role:</strong> {request.interviewer_role}
                   </p>
                   <p>
-                    <FontAwesomeIcon icon={faCalendar} className="mr-2" /> Passout
-                    Date: {interview.student_passoutdate}
+                    <FontAwesomeIcon icon={faCode} className="mr-2" />{" "}
+                    <strong>Interviewer Experience:</strong>{" "}
+                    {request.interviewer_experience}
                   </p>
                   <p>
-                    <marquee>
-                      <strong>Date: </strong>
-                      {interview.date}, <strong>Time:</strong> {interview.time}
-                    </marquee>
+                    <i>Make further communication with Interviewer by email</i>
                   </p>
-                  <button
-                    className="btn btn-primary"
-                    data-toggle="modal"
-                    data-target="#feedbackModal"
-                    onClick={() => handleFeedbackClick(interview)}
-                  >
-                    Provide Feedback
-                  </button>
                 </div>
               </div>
             </div>
           ))}
         </div>
       )}
-
-      {selectedInterview && (
-        <div className="modal fade" id="feedbackModal" tabIndex="-1">
-          <div className="modal-dialog">
-            <div className="modal-content">
-              <div className="modal-header">
-                <h5 className="modal-title">Provide Feedback</h5>
-                <button
-                  type="button"
-                  className="close"
-                  data-dismiss="modal"
-                  aria-label="Close"
-                  onClick={() => setSelectedInterview(null)}
-                >
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div className="modal-body">
-                {selectedInterview && selectedInterview.student_name && (
-                  <p>
-                    You are providing feedback for the interview with{" "}
-                    <strong>{selectedInterview.student_name}</strong>. Please
-                    enter your feedback message below:
-                  </p>
-                )}
-                <textarea
-                  className="form-control"
-                  rows="4"
-                  placeholder="Enter your feedback message"
-                  value={feedbackMessage}
-                  onChange={(e) => setFeedbackMessage(e.target.value)}
-                ></textarea>
-              </div>
-              <div className="modal-footer">
-                <button
-                  type="button"
-                  className="btn btn-secondary"
-                  data-dismiss="modal"
-                  onClick={() => setSelectedInterview(null)}
-                >
-                  Close
-                </button>
-                <button
-                  type="button"
-                  className="btn btn-primary"
-                  onClick={handleFeedbackSubmit}
-                >
-                  Submit Feedback
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 };
 
-
-export default ScheduledProfessional;
-
+export default ScheduledStudent;
