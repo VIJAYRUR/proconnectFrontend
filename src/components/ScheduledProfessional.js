@@ -99,23 +99,13 @@ const ScheduledProfessional = () => {
     }
   };
 
-  function convertDateToISO(dateString) {
-    const parts = dateString.split("-");
-    if (parts.length === 3) {
-      const [day, month, year] = parts;
-      return `${year}-${month}-${day}`;
-    }
-    return null; // Handle invalid input gracefully
-  }
+ 
 
   function checkDateTime(interview) {
     const currentDate = new Date();
-    const interviewDateISO = convertDateToISO(interview.date);
-    const interviewDateTime = new Date(
-      `${interviewDateISO}T${interview.time}`
-    );
+    
 
-    return currentDate > interviewDateTime;
+    return currentDate >= interviewDateTime;
   }
 
   return (
