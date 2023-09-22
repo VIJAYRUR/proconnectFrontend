@@ -56,7 +56,7 @@ const ProfessionalHistory = () => {
 
   return (
     <div className="container mt-2">
-      <h2 className="mb-4" style={{ marginTop: "10%" }}>
+      <h2 className="mb-4" style={{ marginTop: "5%" }}>
         Feedback History
       </h2>
       {loading ? (
