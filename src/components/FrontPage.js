@@ -66,7 +66,7 @@ const FrontPage = () => {
                 ) : (
                   <>
                     {localStorage.getItem("role") === "student" && (
-                      <Link
+                      <a
                         className="btn my-2 my-sm-0 shadow rounded"
                         style={{
                           backgroundColor: "#4455a4",
@@ -78,13 +78,13 @@ const FrontPage = () => {
                           marginTop: "20px",
                         }}
                         type="submit"
-                        to="/ScheduledStudent"
+                        href="/ScheduledStudent"
                       >
                         To Dashboard
                       </Link>
                     )}
                     {localStorage.getItem("role") === "professional" && (
-                      <Link
+                      <a
                         className="btn my-2 my-sm-0 shadow rounded"
                         style={{
                           backgroundColor: "#4455a4",
@@ -96,7 +96,7 @@ const FrontPage = () => {
                           marginTop: "20px",
                         }}
                         type="submit"
-                        to="/ScheduledProfessional"
+                        href="/ScheduledProfessional"
                       >
                         To Dashboard
                       </Link>
