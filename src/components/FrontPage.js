@@ -76,7 +76,7 @@ const FrontPage = () => {
                     marginTop: "20px",
                   }}
                   type="submit"
-                  to="/dashboard">
+                  to={localstorage.getItem("role")==="student"?"/scheduledstudent":"/scheduledprofessional"}>
                     To Dashboard
                   </Link>
       }
