@@ -46,56 +46,63 @@ const FrontPage = () => {
                 CONNECTING THE STUDENTS WITH WORKING PROFESSIONALS
               </h3>
               <div style={{ textAlign: "center" }}>
-                { localStorage.getItem("token")==null ? 
-                <Link
-                  className="btn my-2 my-sm-0 shadow rounded"
-                  style={{
-                    backgroundColor: "#4455a4",
-                    color: "#eeeeee",
-                    fontWeight: "bold",
-                    fontSize: "18px",
-                    width: "100%",
-                    maxWidth: "220px",
-                    marginTop: "20px",
-                  }}
-                  type="submit"
-                  to="/register"
-                >
-                  Sign Up
-                </Link>
-                :(<>
-{localstorage.getItem("role")==="student" && <Link
-                  className="btn my-2 my-sm-0 shadow rounded"
-                  style={{
-                    backgroundColor: "#4455a4",
-                    color: "#eeeeee",
-                    fontWeight: "bold",
-                    fontSize: "18px",
-                    width: "100%",
-                    maxWidth: "220px",
-                    marginTop: "20px",
-                  }}
-                  type="submit"
-                  to="/ScheduledStudent">
-                    To Dashboard
-                  </Link>}
-{localstorage.getItem("role")==="professional" && <Link
-                  className="btn my-2 my-sm-0 shadow rounded"
-                  style={{
-                    backgroundColor: "#4455a4",
-                    color: "#eeeeee",
-                    fontWeight: "bold",
-                    fontSize: "18px",
-                    width: "100%",
-                    maxWidth: "220px",
-                    marginTop: "20px",
-                  }}
-                  type="submit"
-                  to="/ScheduledProfessional">
-                    To Dashboard
-                  </Link>}
-
-                    </>)}
+                {localStorage.getItem("token") === null ? (
+                  <Link
+                    className="btn my-2 my-sm-0 shadow rounded"
+                    style={{
+                      backgroundColor: "#4455a4",
+                      color: "#eeeeee",
+                      fontWeight: "bold",
+                      fontSize: "18px",
+                      width: "100%",
+                      maxWidth: "220px",
+                      marginTop: "20px",
+                    }}
+                    type="submit"
+                    to="/register"
+                  >
+                    Sign Up
+                  </Link>
+                ) : (
+                  <>
+                    {localStorage.getItem("role") === "student" && (
+                      <Link
+                        className="btn my-2 my-sm-0 shadow rounded"
+                        style={{
+                          backgroundColor: "#4455a4",
+                          color: "#eeeeee",
+                          fontWeight: "bold",
+                          fontSize: "18px",
+                          width: "100%",
+                          maxWidth: "220px",
+                          marginTop: "20px",
+                        }}
+                        type="submit"
+                        to="/ScheduledStudent"
+                      >
+                        To Dashboard
+                      </Link>
+                    )}
+                    {localStorage.getItem("role") === "professional" && (
+                      <Link
+                        className="btn my-2 my-sm-0 shadow rounded"
+                        style={{
+                          backgroundColor: "#4455a4",
+                          color: "#eeeeee",
+                          fontWeight: "bold",
+                          fontSize: "18px",
+                          width: "100%",
+                          maxWidth: "220px",
+                          marginTop: "20px",
+                        }}
+                        type="submit"
+                        to="/ScheduledProfessional"
+                      >
+                        To Dashboard
+                      </Link>
+                    )}
+                  </>
+                )}
               </div>
             </div>
           </div>
