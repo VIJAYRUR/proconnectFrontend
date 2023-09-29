@@ -1,13 +1,26 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUniversity, faGraduationCap, faCode } from "@fortawesome/free-solid-svg-icons"; // Import the icons you need
+import {
+  faUniversity,
+  faGraduationCap,
+  faEnvelope,
+  faFileAlt,
+  faMoneyCheckAlt,
+  faBrain,
+  faCode,
+} from "@fortawesome/free-solid-svg-icons";
+import {
+  faLinkedin,
+  faTwitter,
+  faGithub,
+} from "@fortawesome/free-brands-svg-icons";
 
-// Create a new component to render individual request cards
 const cardHoverStyles = {
   transition: "transform 0.2s, box-shadow 0.2s",
   boxShadow: "0 0 5px rgba(0, 0, 0, 0.2)",
 };
+
 const RequestCard = ({ request, onConnectClick }) => {
   const percentage = request[0];
   const userData = request[1];
@@ -22,32 +35,55 @@ const RequestCard = ({ request, onConnectClick }) => {
   };
 
   return (
-    <div className="col-md-4 mb-4">
+    <div className="col-md-4 mb-2">
       <div
-        className="card request-card"
-        style={isHovered ? cardHoverStyles : {}}
+        className={`card card-cascade request-card ${
+          isHovered ? "hovered" : ""
+        }`}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
       >
-        <div className="card-body">
-          <h5 className="card-title">{userData.username}'s Request</h5>
-          <div>
-            <i>profile match: {percentage % 101}%</i>
-          </div>
+        <div className="card-body card-body-cascade text-center">
+          <h4 className="card-title">
+            <strong>{userData.username}</strong>
+          </h4>
           <br></br>
-          {/* University Icon */}
-          <p>
-            <FontAwesomeIcon icon={faUniversity} /> <strong>University:</strong> {userData.university}
-          </p>
-          {/* GPA Icon */}
-          <p>
-            <FontAwesomeIcon icon={faGraduationCap} /> <strong>GPA:</strong> {userData.CGPA}
-          </p>
-          {/* Skills Icon */}
-          <p>
-            <FontAwesomeIcon icon={faCode} /> <strong>Skills to be questioned:</strong>{" "}
-            {userData.skills_to_be_questioned.join(",")}
-          </p>
+          <ul className="list-group">
+            <li className="list-group-item">
+              <FontAwesomeIcon icon={faEnvelope} className="mr-2" />
+              <strong>Email:</strong> {userData.email}
+            </li>
+            <li className="list-group-item">
+              <FontAwesomeIcon icon={faUniversity} className="mr-2" />
+              <strong>University:</strong> {userData.university}
+            </li>
+            <li className="list-group-item">
+              <FontAwesomeIcon icon={faFileAlt} className="mr-2" />
+              <strong>CGPA:</strong> {userData.CGPA}
+            </li>
+            <li className="list-group-item">
+              <FontAwesomeIcon icon={faMoneyCheckAlt} className="mr-2" />
+              <strong>Passout Date:</strong> {userData.passoutdate}
+            </li>
+            <li className="list-group-item">
+              <FontAwesomeIcon icon={faCode} />{" "}
+              <strong>Skills to be questioned:</strong>{" "}
+              {userData.skills_to_be_questioned.join(",")}
+            </li>
+            <li className="list-group-item">
+              <FontAwesomeIcon icon={faBrain} /> <strong>Proficiency:</strong>{" "}
+              {userData.depth_of_knowledge}
+            </li>
+            <li className="list-group-item" style={{ fontSize: "25px" }}>
+              <FontAwesomeIcon icon={faLinkedin} className="mr-3" />
+
+              <FontAwesomeIcon icon={faTwitter} className="mr-3" />
+
+              <FontAwesomeIcon icon={faGithub} />
+            </li>
+          </ul>
+
+          <br></br>
           <button
             className="btn btn-primary"
             data-toggle="modal"
@@ -56,6 +92,10 @@ const RequestCard = ({ request, onConnectClick }) => {
           >
             Connect
           </button>
+        </div>
+
+        <div className="card-footer text-muted text-center">
+          {percentage}% Match
         </div>
       </div>
     </div>
@@ -72,18 +112,20 @@ const MatchRequests = () => {
   useEffect(() => {
     const fetchActiveRequests = async () => {
       try {
-        const response = await fetch("https://proconnect-backend.onrender.com/user/view_all_request", {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            authorization: "Bearer " + localStorage.getItem("token"),
-          },
-        });
+        const response = await fetch(
+          "https://proconnect-backend.onrender.com/user/view_all_request",
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              authorization: "Bearer " + localStorage.getItem("token"),
+            },
+          }
+        );
 
         if (response.ok) {
           const data = await response.json();
-          console.log(data);
-          setRequests(data[0]); // Extract the requests from the response
+          setRequests(data[0]);
         }
       } catch (error) {
         console.error("Error fetching active requests:", error);
@@ -91,7 +133,7 @@ const MatchRequests = () => {
     };
 
     fetchActiveRequests();
-  });
+  }, []);
 
   const handleConnectClick = (request) => {
     setSelectedRequest(request);
@@ -99,19 +141,22 @@ const MatchRequests = () => {
 
   const handleScheduleInterview = async () => {
     try {
-      const response = await fetch("https://proconnect-backend.onrender.com/user/match_to_request", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          authorization: "Bearer " + localStorage.getItem("token"),
-        },
-        body: JSON.stringify({
-          studentname: selectedRequest.username || "",
-          date: interviewDate,
-          time: interviewTime,
-        }),
-      });
-      console.log(response);
+      const response = await fetch(
+        "https://proconnect-backend.onrender.com/user/match_to_request",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            authorization: "Bearer " + localStorage.getItem("token"),
+          },
+          body: JSON.stringify({
+            studentname: selectedRequest.username || "",
+            date: interviewDate,
+            time: interviewTime,
+          }),
+        }
+      );
+
       if (response.ok) {
         setSelectedRequest(null);
         window.location.reload();
@@ -126,7 +171,6 @@ const MatchRequests = () => {
 
   return (
     <div className="container mt-5">
-      <h2 className="mb-4">Active Requests</h2>
       <div className="row">
         {requests && requests.length > 0 ? (
           requests.map((request, index) => (
