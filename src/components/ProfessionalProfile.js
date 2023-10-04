@@ -22,6 +22,8 @@ const ProfessionalProfile = () => {
   const [error, setError] = useState("");
   const [showAllSkills, setShowAllSkills] = useState(false);
   const [showAllCompanies, setShowAllCompanies] = useState(false);
+  const [history, setHistory] = useState([]);
+  const [newCompany, setNewCompany] = useState("");
 
   useEffect(() => {
     const fetchProfileData = async () => {
@@ -83,6 +85,21 @@ const ProfessionalProfile = () => {
   };
   const toggleHistoryView = () => {
     setShowAllCompanies(!showAllCompanies);
+  };
+  const handleNewCompanyChange = (event) => {
+    setNewCompany(event.target.value);
+  };
+  const handleAddCompany = () => {
+    if (newCompany.trim() !== "") {
+      setHistory([...history, newCompany]);
+      setNewCompany(""); // Clear the input field
+    }
+  };
+  const handleRemoveCompany = (companyToRemove) => {
+    const updatedHistory = history.filter(
+      (company) => company !== companyToRemove
+    );
+    setHistory(updatedHistory);
   };
 
   return (

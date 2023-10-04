@@ -21,14 +21,36 @@ const CreateESP = () => {
   const [searchedSkill, setSearchedSkill] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [selectedSkills, setSelectedSkills] = useState([]);
+  const [achievements, setAchievements] = useState([]);
+  const [newAchievement, setNewAchievement] = useState("");
+
+  const handleNewAchievementChange = (event) => {
+    setNewAchievement(event.target.value);
+  };
+  const handleAddAchievement = () => {
+    if (newAchievement.trim() !== "") {
+      setAchievements([...achievements, newAchievement]);
+      setNewAchievement(""); // Clear the input field
+    }
+  };
+  const handleRemoveAchievement = (achievementToRemove) => {
+    const updatedAchievements = achievements.filter(
+      (achievement) => achievement !== achievementToRemove
+    );
+    setAchievements(updatedAchievements);
+  };
+
+  const cardStyle = {
+    boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+    borderRadius: "8px",
+  };
   const handleSearchSkill = (event) => {
     const skillToSearch = event.target.value;
     setSearchedSkill(skillToSearch);
 
     // Filter the sample skills based on the search query
-    const filteredSkills = sampleSkills.filter(
-      (skill) =>
-        skill.toLowerCase().includes(skillToSearch.toLowerCase())
+    const filteredSkills = sampleSkills.filter((skill) =>
+      skill.toLowerCase().includes(skillToSearch.toLowerCase())
     );
     setSearchResults(filteredSkills);
   };
@@ -41,21 +63,26 @@ const CreateESP = () => {
   };
 
   const handleRemoveSkill = (skillToRemove) => {
-    const updatedSkills = selectedSkills.filter((skill) => skill !== skillToRemove);
+    const updatedSkills = selectedSkills.filter(
+      (skill) => skill !== skillToRemove
+    );
     setSelectedSkills(updatedSkills);
-    console.log(selectedSkills)
+    console.log(selectedSkills);
   };
 
   useEffect(() => {
     const fetchProfileData = async () => {
       try {
-        const response = await fetch("https://proconnect-backend.onrender.com/user/view_student_profile", {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            authorization: "Bearer " + localStorage.getItem("token"),
-          },
-        });
+        const response = await fetch(
+          "https://proconnect-backend.onrender.com/user/view_student_profile",
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              authorization: "Bearer " + localStorage.getItem("token"),
+            },
+          }
+        );
         if (!response || response === undefined || response === null) {
           setError("Make your profile");
         }
@@ -70,7 +97,7 @@ const CreateESP = () => {
           setUniversityCGPA(data ? data.universitycgpa : "");
           setPassoutDate(data ? data.passoutdate : "");
           setSkills(data && data.skills ? data.skills.join(", ") : "");
-          setSelectedSkills(data ? data.skills : [])
+          setSelectedSkills(data ? data.skills : []);
         } else {
           setError("Error fetching profile data");
         }
@@ -91,17 +118,22 @@ const CreateESP = () => {
   const handleUsernameChange = (event) => {
     setUsername(event.target.value);
   };
-
+  const fieldsetStyle = {
+    border: "1px solid #ccc",
+    padding: "10px",
+    borderRadius: "5px",
+    margin: "10px",
+  };
   const handleEmailChange = (event) => {
     setEmail(event.target.value);
   };
 
   const handleUniversityChange = (event) => {
-    setUniversity(event.target.value);
+    setUniversity(event.target.value.toUpperCase());
   };
 
   const handleUniversityCourseChange = (event) => {
-    setUniversityCourse(event.target.value);
+    setUniversityCourse(event.target.value.toUpperCase());
   };
 
   const handleUniversityCGPAChange = (event) => {
@@ -121,21 +153,24 @@ const CreateESP = () => {
     const skills_array = selectedSkills;
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch("https://proconnect-backend.onrender.com/user/make_student_profile", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          authorization: "Bearer " + token,
-        },
-        body: JSON.stringify({
-          username,
-          university,
-          universitycourse: universityCourse,
-          universitycgpa: universityCGPA,
-          passoutdate: passoutDate,
-          skills: skills_array,
-        }),
-      });
+      const response = await fetch(
+        "https://proconnect-backend.onrender.com/user/make_student_profile",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            authorization: "Bearer " + token,
+          },
+          body: JSON.stringify({
+            username,
+            university,
+            universitycourse: universityCourse,
+            universitycgpa: universityCGPA,
+            passoutdate: passoutDate,
+            skills: skills_array,
+          }),
+        }
+      );
 
       if (response.ok) {
         const data = await response.text();
@@ -156,7 +191,7 @@ const CreateESP = () => {
   // Conditional rendering based on isLoading
   return (
     <div className="container mt-5">
-      <div className="row justify-content-center" style={{marginTop:"10%"}}>
+      <div className="row justify-content-center" style={{ marginTop: "10%" }}>
         <div className="col-sm-8">
           <div className="card">
             <div className="card-header">
@@ -164,7 +199,14 @@ const CreateESP = () => {
             </div>
             <div className="card-body">
               <form onSubmit={handleSubmit}>
-                <div className="form-row">
+                <div
+                  className="form-row"
+                  style={{
+                    padding: "10px",
+                    borderRadius: "5px",
+                    margin: "10px",
+                  }}
+                >
                   <div className="form-group col-md-6">
                     <label>Email:</label>
                     <input
@@ -175,97 +217,154 @@ const CreateESP = () => {
                     />
                   </div>
                 </div>
-                <div className="form-row">
-                  <div className="form-group col-md-6">
-                    <label>University:</label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      value={university}
-                      onChange={handleUniversityChange}
-                    />
-                  </div>
-                  <div className="form-group col-md-6">
-                    <label>University Course:</label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      value={universityCourse}
-                      onChange={handleUniversityCourseChange}
-                    />
-                  </div>
-                </div>
-                <div className="form-row">
-                  <div className="form-group col-md-6">
-                    <label>University CGPA:</label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      value={universityCGPA}
-                      onChange={handleUniversityCGPAChange}
-                    />
-                  </div>
-                  <div className="form-group col-md-6">
-                    <label>Passout Date:</label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      value={passoutDate}
-                      onChange={handlePassoutDateChange}
-                    />
-                  </div>
+                <div className="form-group">
+                  <fieldset style={fieldsetStyle}>
+                    <div className="form-row">
+                      <div className="form-group col-md-6">
+                        <label>University:</label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          value={university}
+                          onChange={handleUniversityChange}
+                        />
+                      </div>
+                      <div className="form-group col-md-6">
+                        <label>University Course:</label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          value={universityCourse}
+                          onChange={handleUniversityCourseChange}
+                        />
+                      </div>
+                    </div>
+                    <div className="form-row">
+                      <div className="form-group col-md-6">
+                        <label>University CGPA:</label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          value={universityCGPA}
+                          onChange={handleUniversityCGPAChange}
+                        />
+                      </div>
+                      <div className="form-group col-md-6">
+                        <label>Passout Date:</label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          value={passoutDate}
+                          onChange={handlePassoutDateChange}
+                        />
+                      </div>
+                    </div>
+                  </fieldset>
                 </div>
                 <div className="form-group">
-                <label>Add Skills:</label>
-                  <div className="input-group">
-                    <input
-                      type="text"
-                      className="form-control"
-                      placeholder="Search for a skill"
-                      value={searchedSkill}
-                      onChange={handleSearchSkill}
-                    />
-                    <div className="input-group-append">
-                      <button
-                        type="button"
-                        className="btn btn-primary"
-                        onClick={() => handleAddSkill(searchedSkill)}
-                      >
-                        Add
-                      </button>
-                    </div>
-                  </div>
-                  {searchedSkill && (
-                    <div className="list-group skill-list">
-                      {searchResults.map((skill, index) => (
-                        <div
-                          key={index}
-                          className="list-group-item list-group-item-action"
-                          onClick={() => handleAddSkill(skill)}
-                        >
-                          {skill}
+                  <fieldset style={fieldsetStyle}>
+                    <legend>Add Skills:</legend>
+                    <div className="form-group">
+                      <div className="input-group">
+                        <input
+                          type="text"
+                          className="form-control"
+                          placeholder="Search for a skill"
+                          value={searchedSkill}
+                          onChange={handleSearchSkill}
+                        />
+                        <div className="input-group-append">
+                          <button
+                            type="button"
+                            className="btn btn-primary"
+                            onClick={() => handleAddSkill(searchedSkill)}
+                          >
+                            Add
+                          </button>
                         </div>
+                      </div>
+                      {searchedSkill && (
+                        <div className="list-group skill-list">
+                          {searchResults.map((skill, index) => (
+                            <div
+                              key={index}
+                              className="list-group-item list-group-item-action"
+                              onClick={() => handleAddSkill(skill)}
+                            >
+                              {skill}
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                      <label>Selected Skills:</label>
+                      <div className="selected-skills">
+                        {selectedSkills.map((skill, index) => (
+                          <span
+                            key={index}
+                            className="badge badge-primary skill-badge"
+                          >
+                            {skill}
+                            <span
+                              className="remove-skill"
+                              onClick={() => handleRemoveSkill(skill)}
+                            >
+                              &times;
+                            </span>
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  </fieldset>
+                </div>
+                <div className="form-group">
+                  <fieldset style={fieldsetStyle}>
+                    <legend>Add Achievements:</legend>
+                    <div className="form-group">
+                      <div className="input-group">
+                        <input
+                          type="text"
+                          className="form-control"
+                          placeholder="Enter an achievement"
+                          value={newAchievement}
+                          onChange={handleNewAchievementChange}
+                        />
+                        <div className="input-group-append">
+                          <button
+                            type="button"
+                            className="btn btn-primary"
+                            onClick={handleAddAchievement}
+                          >
+                            Add
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+
+                    <label>Existing Achievements:</label>
+                    <div className="existing-achievements">
+                      {achievements.map((achievement, index) => (
+                        <span
+                          key={index}
+                          className="badge badge-primary achievement-badge"
+                        >
+                          {achievement}
+                          <span
+                            className="remove-achievement"
+                            onClick={() => handleRemoveAchievement(achievement)}
+                          >
+                            &times;
+                          </span>
+                        </span>
                       ))}
                     </div>
-                  )}
-                  <label>Selected Skills:</label>
-                  <div className="selected-skills">
-                    {selectedSkills.map((skill, index) => (
-                      <span key={index} className="badge badge-primary skill-badge">
-                        {skill}
-                        <span
-                          className="remove-skill"
-                          onClick={() => handleRemoveSkill(skill)}
-                        >
-                          &times;
-                        </span>
-                      </span>
-                    ))}
-                    </div>
+                  </fieldset>
                 </div>
-                <button type="submit" className="btn btn-primary">
-                  Save Changes
-                </button>
+                <br></br>
+                <div className="text-center">
+                  <button type="submit" className="btn btn-primary">
+                    Save Changes
+                  </button>
+                </div>
               </form>
             </div>
           </div>

@@ -99,15 +99,13 @@ const ScheduledProfessional = () => {
     }
   };
 
- 
-
   function checkDateTime(interview) {
     const currentDate = new Date();
     const interviewDate = new Date(
-    `${interview.date}T${interview.time}:00.000Z`
-  );
+      `${interview.date}T${interview.time}:00.000Z`
+    );
 
-  return currentDate >= interviewDate;
+    return currentDate >= interviewDate;
   }
 
   return (
@@ -149,8 +147,8 @@ const ScheduledProfessional = () => {
                     University CGPA: {interview.student_CGPA}
                   </p>
                   <p>
-                    <FontAwesomeIcon icon={faCalendar} className="mr-2" /> Passout
-                    Date: {interview.student_passoutdate}
+                    <FontAwesomeIcon icon={faCalendar} className="mr-2" />{" "}
+                    Passout Date: {interview.student_passoutdate}
                   </p>
                   <p>
                     <marquee>
