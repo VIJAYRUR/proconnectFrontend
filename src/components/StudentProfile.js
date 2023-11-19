@@ -298,7 +298,7 @@ const StudentProfile = () => {
             later.
           </p>
           <button className="btn btn-primary ">
-            <Link to="/EditProfessionalProfile" style={{ color: "white" }}>
+            <Link to="/editstudentprofile" style={{ color: "white" }}>
               Create Profile
             </Link>
           </button>
